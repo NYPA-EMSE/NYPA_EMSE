@@ -1,1 +1,0 @@
-# NYPA_EMSE
