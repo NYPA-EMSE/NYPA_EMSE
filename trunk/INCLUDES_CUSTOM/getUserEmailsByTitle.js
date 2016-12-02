@@ -1,5 +1,3 @@
-
-
 function getUserEmailsByTitle(searchTitle) {
 	searchTitle = (""+searchTitle).toUpperCase()
 	emailList = []
@@ -9,7 +7,7 @@ function getUserEmailsByTitle(searchTitle) {
 			userList = userListObj.getOutput()
 			for (u in userList) {
 				thisUserEmail = ""+userList[u].getEmail()
-				if ((""+userList[u].getTitle()).toUpperCase() == searchTitle && thisUserEmail != "null") emailList.push(thisUserEmail)
+				if ( ((""+userList[u].getTitle()).toUpperCase()).indexOf(searchTitle) >= 0 && thisUserEmail != "null") emailList.push(thisUserEmail)
 			}
 			return emailList
 		}
