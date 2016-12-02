@@ -3,7 +3,7 @@ try {
 	var MAX_RECORDS = 999999//aa.cap.getCapIDList().getOutput().length
 	var MAX_USE_CODES = 10
 	var DELIM = "|"
-	var NEW_LINE = "\r\n"
+	var NEW_LINE = "<br>" //"\r\n"
 	var TIMEOUT = 60*60
 	
 	var processTimeout = false
@@ -35,7 +35,6 @@ try {
 	GPS_START_LON = "Longitude Start"
 	PERIODIC_FEE_BASED_ON = "Periodic Fee Based On"
 	PERMIT_AREA = "Permit Area"
-	PERMIT_NUMBER = "FID/License No." 
 	PLATE_NO = "Plate #"
 	SECTION = "Section" 
 
@@ -59,8 +58,8 @@ try {
 			newLine.push(aa.appSpecificInfo.getAppSpecificInfos(capId,GPS_START_LON).getOutput()[0].getChecklistComment() )
 			newLine.push(aa.appSpecificInfo.getAppSpecificInfos(capId,PERIODIC_FEE_BASED_ON).getOutput()[0].getChecklistComment() )
 			newLine.push(aa.appSpecificInfo.getAppSpecificInfos(capId,PERMIT_AREA).getOutput()[0].getChecklistComment() )
+			newLine.push(cap.getSpecialText())
 			newLine.push(capId.getCustomID())
-			newLine.push(aa.appSpecificInfo.getAppSpecificInfos(capId,PERMIT_NUMBER).getOutput()[0].getChecklistComment() )
 			newLine.push(aa.cap.getCapWorkDesByPK(capId).getOutput().getDescription() )
 			newLine.push(""+cap.getCapStatus())
 			newLine.push(aa.appSpecificInfo.getAppSpecificInfos(capId,PLATE_NO).getOutput()[0].getChecklistComment() )
@@ -81,7 +80,7 @@ try {
 			aa.print("**ERROR: GIS Interface Skipping " + capId.getCustomID() + ": " + errr)
 		}
 
-		//if (i >= 20 ) break
+		if (i >= 200 ) break
 
 	}
 	if (!processTimeout) {
