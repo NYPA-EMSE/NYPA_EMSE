@@ -16,7 +16,7 @@ try{
 		
 		var eParams = aa.util.newHashtable(); 
 		addParameter(eParams, "$$alias$$ ", cap.getCapType().getAlias())
-		addParameter(eParams, "$$altId$$",altId)
+		addParameter(eParams, "$$altId$$",capIDString)
 		addParameter(eParams, "$$applicantName$$", applicantName)
 		//addParameter(eParams, "$$status$$", capStatus)
 		addParameter(eParams, "$$userId$$", currentUserID)
@@ -55,7 +55,7 @@ try{
 		
 		var eParams = aa.util.newHashtable(); 
 		addParameter(eParams, "$$alias$$ ", cap.getCapType().getAlias())
-		addParameter(eParams, "$$altId$$",altId)
+		addParameter(eParams, "$$altId$$",capIDString)
 		addParameter(eParams, "$$applicantName$$", applicantName)
 		addParameter(eParams, "$$status$$", capStatus)
 		addParameter(eParams, "$$userId$$", currentUserID)
