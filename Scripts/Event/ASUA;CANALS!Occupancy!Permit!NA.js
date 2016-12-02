@@ -1,3 +1,4 @@
+var sysFromEmail = lookup("ACA_EMAIL_TO_AND_FROM_SETTING", "RENEW_LICENSE_AUTO_ISSUANCE_MAILFROM");
 /**************************************************************************************************************
 *	ID-2 - Send Email Active
 *	Mike Linscheid
