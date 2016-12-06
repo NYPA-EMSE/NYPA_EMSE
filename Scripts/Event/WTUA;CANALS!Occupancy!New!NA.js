@@ -69,6 +69,15 @@ try{
 		//Send to WORKFLOW People
 		sendNotification(sysFromEmail, ""+getTaskCompletersEmail("Application Entry"), "", emailTemplateName, eParams, null)
 		sendNotification(sysFromEmail, ""+getTaskCompletersEmail("DPE Review"), "", emailTemplateName, eParams, null)
+		
+		//Create Occupancy Permit
+		parentId = createParent("CANALS","Occupancy","Permit","NA", capName)
+		
+		//Copy information from New to Permit record
+		copyAppSpecific(parentId)
+		aa.cap.copyCapWorkDesInfo(capId, parentId);
+		aa.cap.copyCapDetailInfo(capId, parentId);
+		copyAdditionalInfo(capId, parentId);
 	}
 }
 catch (err) {
@@ -114,4 +123,5 @@ catch (err) {
 	logDebug("A JavaScript Error occurred: WTUA:CANALS/Occupancy/New/NA: #04: " + err.message);
 	logDebug(err.stack)
 }
+
 
