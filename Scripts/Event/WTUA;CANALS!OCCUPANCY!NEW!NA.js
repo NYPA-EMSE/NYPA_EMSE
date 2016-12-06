@@ -75,6 +75,7 @@ try{
 		
 		//Copy information from New to Permit record
 		copyAppSpecific(parentId)
+		copyASITables(capId, parentId)
 		aa.cap.copyCapWorkDesInfo(capId, parentId);
 		aa.cap.copyCapDetailInfo(capId, parentId);
 		copyAdditionalInfo(capId, parentId);
