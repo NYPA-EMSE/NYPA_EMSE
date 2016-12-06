@@ -21,7 +21,7 @@ var debugText = "";
 var showDebug = false;	
 var showMessage = false;
 var message = "";
-var maxSeconds = 5;
+var maxSeconds = 10*60;
 var br = "<br>";
 var useAppSpecificGroupName = false
 /*-------------------------------------------------------------------------------------------------------/
