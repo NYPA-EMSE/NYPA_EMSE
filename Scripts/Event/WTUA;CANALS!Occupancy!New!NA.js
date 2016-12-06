@@ -5,7 +5,7 @@ var sysFromEmail = lookup("ACA_EMAIL_TO_AND_FROM_SETTING", "RENEW_LICENSE_AUTO_I
 *	Mike Linscheid
 */
 try{
-	if (wfTask == "DPE Complete" && wfStatus == "Complete" ) {
+	if (wfTask == "DPE Review" && wfStatus == "Complete" ) {
 		var emailTemplateName = "CANAL_REVIEW_AND_APPROVAL"
 		applicantName = "-NA-"
 		conArr = getContactArray();
@@ -68,7 +68,7 @@ try{
 		
 		//Send to WORKFLOW People
 		sendNotification(sysFromEmail, ""+getTaskCompletersEmail("Application Entry"), "", emailTemplateName, eParams, null)
-		sendNotification(sysFromEmail, ""+getTaskCompletersEmail("DPE Complete"), "", emailTemplateName, eParams, null)
+		sendNotification(sysFromEmail, ""+getTaskCompletersEmail("DPE Review"), "", emailTemplateName, eParams, null)
 	}
 }
 catch (err) {
@@ -107,7 +107,7 @@ try{
 		
 		//Send to WORKFLOW People
 		sendNotification(sysFromEmail, getTaskCompletersEmail("Application Entry"), "", emailTemplateName, eParams, null)
-		sendNotification(sysFromEmail, getTaskCompletersEmail("DPE Complete"), "", emailTemplateName, eParams, null)
+		sendNotification(sysFromEmail, getTaskCompletersEmail("DPE Review"), "", emailTemplateName, eParams, null)
 	}
 }
 catch (err) {

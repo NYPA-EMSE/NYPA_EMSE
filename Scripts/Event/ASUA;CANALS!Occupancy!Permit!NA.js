@@ -30,7 +30,7 @@ try{
 		
 		//Send to WORKFLOW People
 		sendNotification(sysFromEmail, getTaskCompletersEmail("Application Entry",getParent()), "", emailTemplateName, eParams, null)
-		sendNotification(sysFromEmail, getTaskCompletersEmail("DPE Complete",getParent()), "", emailTemplateName, eParams, null)
+		sendNotification(sysFromEmail, getTaskCompletersEmail("DPE Review",getParent()), "", emailTemplateName, eParams, null)
 	}
 }
 catch (err) {
@@ -69,7 +69,7 @@ try{
 		
 		//Send to WORKFLOW People
 		sendNotification(sysFromEmail, getTaskCompletersEmail("Application Entry",getParent()), "", emailTemplateName, eParams, null)
-		sendNotification(sysFromEmail, getTaskCompletersEmail("DPE Complete",getParent()), "", emailTemplateName, eParams, null)
+		sendNotification(sysFromEmail, getTaskCompletersEmail("DPE Review",getParent()), "", emailTemplateName, eParams, null)
 	}
 }
 catch (err) {

@@ -1,10 +1,18 @@
 try {
-	var startTime = new Date().getTime();
+	var today = new Date()
+	var startTime = today.getTime();
 	var MAX_RECORDS = 999999//aa.cap.getCapIDList().getOutput().length
 	var MAX_USE_CODES = 10
 	var DELIM = "|"
-	var NEW_LINE = "<br>" //"\r\n"
+	var NEW_LINE = (aa.env.getValue("BatchJobName") == "") ? "\r\n" : "<br>"
 	var TIMEOUT = 60*60
+	var FILE_TYPE = ".csv"
+	
+	var FILE_NAME = "GIS_"+today.getFullYear() + "-"
+	FILE_NAME += ("0"+(1+today.getMonth())).slice(-2) + "-" 
+	FILE_NAME += ("0"+today.getDate()).slice(-2) + "-" 
+	FILE_NAME += ("0"+today.getHours()).slice(-2) + "-" 
+	FILE_NAME += ("0"+today.getMinutes()).slice(-2) 
 	
 	var processTimeout = false
 	
@@ -25,6 +33,7 @@ try {
 		"PLATE_NO",
 		"SECTION"]
 	for (uc = 1; uc <= MAX_USE_CODES; uc++) HEADER.push("USE_CODE_"+ uc)
+	HEADER.push("USE_TYPE")
 
 	//Custom Filed Mapping
 	CANAL_DIVISION = "Canal Division"
@@ -37,6 +46,7 @@ try {
 	PERMIT_AREA = "Permit Area"
 	PLATE_NO = "Plate #"
 	SECTION = "Section" 
+	USE_TYPE = "Use Type"
 
 	var GIS_Export = []
 	GIS_Export.push(HEADER.join(DELIM))
@@ -73,6 +83,8 @@ try {
 				else newLine.push(null)
 			}
 			
+			newLine.push(aa.appSpecificInfo.getAppSpecificInfos(capId,USE_TYPE).getOutput()[0].getChecklistComment() )
+			
 			GIS_Export.push(newLine.join(DELIM))
 		}
 		catch(errr) {
@@ -80,11 +92,11 @@ try {
 			aa.print("**ERROR: GIS Interface Skipping " + capId.getCustomID() + ": " + errr)
 		}
 
-		if (i >= 200 ) break
+		if (i >= 20 ) break
 
 	}
 	if (!processTimeout) {
-		aa.print(GIS_Export.join(NEW_LINE))
+		sendDataToWebService(GIS_Export.join(NEW_LINE), FILE_NAME+FILE_TYPE)
 		aa.print("Runtime:" + elapsed(startTime))
 	}
 	else {
@@ -103,3 +115,32 @@ function elapsed(stTime) {
 	var thisTime = thisDate.getTime();
 	return ((thisTime - stTime) / 1000)
 }
+
+function sendDataToWebService(dataString, fileName) {
+	xmlRequest = '';
+	xmlRequest += '<?xml version="1.0" encoding="UTF-8"?>';
+	xmlRequest += '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">'
+	xmlRequest += '<soapenv:Header/>'
+	xmlRequest += '  <soapenv:Body>'
+	xmlRequest += '  <tem:transferData>'
+	xmlRequest += '  <tem:filename>' + fileName + '</tem:filename>'
+	//xmlRequest += '  <tem:d>' + Base64.encode(dataString) + '</tem:d>'
+	xmlRequest += '  <tem:d>' + dataString + '</tem:d>'
+	xmlRequest += '  </tem:transferData>'
+	xmlRequest += '</soapenv:Body>'
+	xmlRequest +='</soapenv:Envelope>       ';
+	aa.print(xmlRequest)
+	/*
+	var postresp = aa.util.httpPostToSoapWebService(dataServiceURL, xmlRequest, "", "", dataServiceSoapAction);
+
+	if (postresp.getSuccess()) {
+	  var response = postresp.getOutput();
+	  aa.print("Response: " + response);  
+	}
+	else {
+		  aa.debug(aa.getServiceProviderCode() + " : ADMIN", "Error : " + postresp.getErrorMessage());
+		  aa.print("Error : " + postresp.getErrorMessage());
+
+	}*/
+}
+
