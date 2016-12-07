@@ -44,8 +44,19 @@ catch (err) {
 try{
 	if (wfTask == "Issuance" && wfStatus == "Issued" ) {
 		var emailTemplateName = "CANAL_ACTIVE"
+		
+		//Create Occupancy Permit
+		parentId = createParent("CANALS","Occupancy","Permit","NA", capName)
+		
+		//Copy information from New to Permit record
+		copyAppSpecific(parentId)
+		copyASITables(capId, parentId)
+		aa.cap.copyCapWorkDesInfo(capId, parentId);
+		aa.cap.copyCapDetailInfo(capId, parentId);
+		copyAdditionalInfo(capId, parentId);
+		
 		applicantName = "-NA-"
-		conArr = getContactArray();
+		conArr = getContactArray(parentId);
 		for (c in conArr) {
 			if (conArr[c]["contactType"] == "Applicant" ) {
 				applicantName = conArr[c]["firstName"] + " " + conArr[c]["lastName"]
@@ -53,11 +64,13 @@ try{
 			}
 		}
 		
+		parentCap = aa.cap.getCap(parentId).getOutput();
+			
 		var eParams = aa.util.newHashtable(); 
-		addParameter(eParams, "$$alias$$ ", cap.getCapType().getAlias())
-		addParameter(eParams, "$$altId$$",capIDString)
+		addParameter(eParams, "$$alias$$ ", parentCap.getCapType().getAlias())
+		addParameter(eParams, "$$altId$$",""+parentId.getCustomID())
 		addParameter(eParams, "$$applicantName$$", applicantName)
-		//addParameter(eParams, "$$status$$", capStatus)
+		addParameter(eParams, "$$status$$", ""+parentCap.getCapStatus())
 		addParameter(eParams, "$$userId$$", currentUserID)
 		
 		DLMemailList = getUserEmailsByTitle("Director of Land Management")
@@ -70,15 +83,7 @@ try{
 		sendNotification(sysFromEmail, ""+getTaskCompletersEmail("Application Entry"), "", emailTemplateName, eParams, null)
 		sendNotification(sysFromEmail, ""+getTaskCompletersEmail("DPE Review"), "", emailTemplateName, eParams, null)
 		
-		//Create Occupancy Permit
-		parentId = createParent("CANALS","Occupancy","Permit","NA", capName)
-		
-		//Copy information from New to Permit record
-		copyAppSpecific(parentId)
-		copyASITables(capId, parentId)
-		aa.cap.copyCapWorkDesInfo(capId, parentId);
-		aa.cap.copyCapDetailInfo(capId, parentId);
-		copyAdditionalInfo(capId, parentId);
+
 	}
 }
 catch (err) {
