@@ -7,7 +7,7 @@ try{
 		//TODO
 		//updateFee("BLD_040","BLD_GENERAL","FINAL",200,"Y","N")
 		
-		editAppSpecific("Fees Lock","CHECKED")
+		editAppSpecific("Fees Locked","CHECKED")
 	}
 }
 catch (err) {
