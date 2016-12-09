@@ -24,9 +24,11 @@ try{
 		
 		DLMemailList = getUserEmailsByTitle("Director of Land Management")
 		PAemailList = getUserEmailsByTitle("Permit Administrator")
+		FemailList = getUserEmailsByTitle("Finance")
 		
 		for (e in DLMemailList) sendNotification(sysFromEmail, DLMemailList[e], "", emailTemplateName, eParams, null)
 		for (e in PAemailList) sendNotification(sysFromEmail, PAemailList[e], "", emailTemplateName, eParams, null)
+		for (e in FemailList) sendNotification(sysFromEmail, FemailList[e], "", emailTemplateName, eParams, null)
 		
 		//Send to WORKFLOW People
 		sendNotification(sysFromEmail, getTaskCompletersEmail("Application Entry",getParent()), "", emailTemplateName, eParams, null)
@@ -55,7 +57,7 @@ try{
 		}
 		
 		var eParams = aa.util.newHashtable(); 
-		addParameter(eParams, "$$alias$$ ", cap.getCapType().getAlias())
+		addParameter(eParams, "$$alias$$", cap.getCapType().getAlias())
 		addParameter(eParams, "$$altId$$",capIDString)
 		addParameter(eParams, "$$applicantName$$", applicantName)
 		addParameter(eParams, "$$status$$", capStatus)
@@ -63,9 +65,11 @@ try{
 		
 		DLMemailList = getUserEmailsByTitle("Director of Land Management")
 		PAemailList = getUserEmailsByTitle("Permit Administrator")
+		FemailList = getUserEmailsByTitle("Finance")
 		
 		for (e in DLMemailList) sendNotification(sysFromEmail, DLMemailList[e], "", emailTemplateName, eParams, null)
 		for (e in PAemailList) sendNotification(sysFromEmail, PAemailList[e], "", emailTemplateName, eParams, null)
+		for (e in FemailList) sendNotification(sysFromEmail, FemailList[e], "", emailTemplateName, eParams, null)
 		
 		//Send to WORKFLOW People
 		sendNotification(sysFromEmail, getTaskCompletersEmail("Application Entry",getParent()), "", emailTemplateName, eParams, null)

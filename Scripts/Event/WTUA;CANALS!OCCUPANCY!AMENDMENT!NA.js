@@ -15,11 +15,10 @@ try{
 			//Copy information from Amendment to parent Permit record
 			copyAppSpecific(parentId)
 			copyASITables(capId, parentId)
-			copyPeopleWithRemove(capId, parentId)
+			//copyPeopleWithRemove(capId, parentId)
 			//aa.cap.copyCapWorkDesInfo(capId, parentId);
 			//aa.cap.copyCapDetailInfo(capId, parentId);
 			//copyAdditionalInfo(capId, parentId);
-		
 		
 			//Script 14 - Revised Email
 			var emailTemplateName = "CANAL_STATUS_UPDATE"
@@ -35,7 +34,7 @@ try{
 			parentCap = aa.cap.getCap(parentId).getOutput();
 			
 			var eParams = aa.util.newHashtable(); 
-			addParameter(eParams, "$$alias$$ ", parentCap.getCapType().getAlias())
+			addParameter(eParams, "$$alias$$", parentCap.getCapType().getAlias())
 			addParameter(eParams, "$$altId$$",""+parentId.getCustomID())
 			addParameter(eParams, "$$applicantName$$", applicantName)
 			addParameter(eParams, "$$status$$", ""+parentCap.getCapStatus())
