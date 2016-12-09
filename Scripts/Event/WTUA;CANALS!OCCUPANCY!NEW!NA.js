@@ -42,7 +42,7 @@ catch (err) {
 *	Mike Linscheid
 */
 try{
-	if (wfTask == "HQ Review" && wfStatus == "Approved" && capStatus == "Active") {
+	if (wfTask == "HQ Review" && wfStatus == "Approved") {
 		var emailTemplateName = "CANAL_APPROVED"
 		applicantName = "-NA-"
 		conArr = getContactArray();
