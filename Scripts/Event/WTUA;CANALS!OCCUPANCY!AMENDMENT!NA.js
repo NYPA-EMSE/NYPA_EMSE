@@ -50,10 +50,10 @@ try{
 		parentCap = aa.cap.getCap(parentId).getOutput();
 		
 		var eParams = aa.util.newHashtable(); 
-		addParameter(eParams, "$$alias$$", parentCap.getCapType().getAlias())
-		addParameter(eParams, "$$altId$$",""+parentId.getCustomID())
+		addParameter(eParams, "$$alias$$", cap.getCapType().getAlias())
+		addParameter(eParams, "$$altId$$",capIDString)
 		addParameter(eParams, "$$applicantName$$", applicantName)
-		//addParameter(eParams, "$$status$$", ""+parentCap.getCapStatus())
+		//addParameter(eParams, "$$status$$", capStatus)
 		//addParameter(eParams, "$$userId$$", currentUserID)
 		
 		DLMemailList = getUserEmailsByTitle("Director of Land Management")
