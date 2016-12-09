@@ -16,7 +16,7 @@ try{
 		}
 		
 		var eParams = aa.util.newHashtable(); 
-		addParameter(eParams, "$$alias$$ ", cap.getCapType().getAlias())
+		addParameter(eParams, "$$alias$$", cap.getCapType().getAlias())
 		addParameter(eParams, "$$altId$$",capIDString)
 		addParameter(eParams, "$$applicantName$$", applicantName)
 		//addParameter(eParams, "$$status$$", capStatus)
