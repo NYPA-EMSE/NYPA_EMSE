@@ -1,15 +1,11 @@
 
 /*------------------------------------------------------------------------------------------------------/
 | Program: Batch Expiration.js  Trigger: Batch
-| Client: South Metro Fire
+| Client: NYPA
 |
-| Frequency: 1st of the year
+| Frequency: Daily
 |
-| Desc: This batch script generates Routine Inspection records based on information in the ASI info
-|		- when the 'Status' column is 'Active' 
-|			and if this year is an 'Interval' of the number of years from the 'Activation Date'
-|		- then create a child Routine Inspection record and copy 'Confidence Test Type' and 'Business Name' info into the child's ASIT
-|
+| Desc: Automatically Closes Active Work Permits that have an expiration date in the past
 /------------------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------------------/
 |
@@ -179,14 +175,14 @@ function mainProcess() {
 		}
 		
 		if (expDate && today > expDate) {
-			updateAppStatus("Expired", "Expired via script", capId)
+			updateAppStatus("Closed", "Closed via script", capId)
 			expCount++
 		}
 		procCount++
 	}
 	
 	logDebug("Number of records processed: " + procCount)
-	logDebug("Number of records Expired: " + expCount)
+	logDebug("Number of records closed: " + expCount)
 }
 
 
