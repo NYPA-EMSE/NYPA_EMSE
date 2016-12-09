@@ -36,7 +36,7 @@ catch (err) {
 *	Mike Linscheid
 */
 try{
-	if (wfTask == "DPE Review" && wfStatus == "Complete") ) {
+	if (wfTask == "DPE Review" && wfStatus == "Complete" ) {
 		var emailTemplateName = "CANAL_REVISED"
 		applicantName = "-NA-"
 		conArr = getContactArray(parentId);
