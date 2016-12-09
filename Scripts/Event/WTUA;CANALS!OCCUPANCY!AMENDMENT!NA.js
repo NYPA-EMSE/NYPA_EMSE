@@ -15,12 +15,13 @@ try{
 			//Copy information from Amendment to parent Permit record
 			copyAppSpecific(parentId)
 			copyASITables(capId, parentId)
-			//copyPeopleWithRemove(capId, parentId)
+			copyPeopleWithRemove(capId, parentId)
 			//aa.cap.copyCapWorkDesInfo(capId, parentId);
 			//aa.cap.copyCapDetailInfo(capId, parentId);
 			//copyAdditionalInfo(capId, parentId);
 		
 			//Script 14 - Revised Email
+			/*
 			var emailTemplateName = "CANAL_STATUS_UPDATE"
 			applicantName = "-NA-"
 			conArr = getContactArray(parentId);
@@ -45,6 +46,7 @@ try{
 			
 			for (e in DLMemailList) sendNotification(sysFromEmail, DLMemailList[e], "", emailTemplateName, eParams, null)
 			for (e in PAemailList) sendNotification(sysFromEmail, PAemailList[e], "", emailTemplateName, eParams, null)
+			*/
 		}
 		
 		//Lock Amendment record
