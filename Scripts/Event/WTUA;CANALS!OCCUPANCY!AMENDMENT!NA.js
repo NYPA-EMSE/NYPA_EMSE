@@ -39,15 +39,13 @@ try{
 	if (wfTask == "DPE Review" && wfStatus == "Complete" ) {
 		var emailTemplateName = "CANAL_REVISED"
 		applicantName = "-NA-"
-		conArr = getContactArray(parentId);
+		conArr = getContactArray();
 		for (c in conArr) {
 			if (conArr[c]["contactType"] == "Applicant" ) {
 				applicantName = conArr[c]["firstName"] + " " + conArr[c]["lastName"]
 				break
 			}
 		}
-		
-		parentCap = aa.cap.getCap(parentId).getOutput();
 		
 		var eParams = aa.util.newHashtable(); 
 		addParameter(eParams, "$$alias$$", cap.getCapType().getAlias())
