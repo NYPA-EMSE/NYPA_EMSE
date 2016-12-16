@@ -1,3 +1,5 @@
+
+
 try {
 	var SOAP_URL = "http://springdelivery3721.cloudapp.net/gis1/Service1.svc/soap"
 	var SOAP_URL = "" + aa.env.getValue("InterfaceAdapterURL");
@@ -114,14 +116,16 @@ try {
 		exportString = GIS_Export.join(NEW_LINE);
 		thisEnd = 0;
 		sendSuccess = true;
+		firstPacket = true
 		aa.print("Attempting to send file with " + exportString.length + " lines.")
 		do {
 			thisStart = thisEnd
-			thisEnd += MAX_POST_LEN
+			thisEnd += (firstPacket) ? 20 : MAX_POST_LEN
 			stage = (thisStart == 0) ? 0 : (thisEnd < exportString.length) ? 1 : 2
 			
 			//aa.print("\n\n"+(thisEnd < exportString.length) + ": "+ exportString.slice(thisStart,thisEnd))
-			sendSuccess = sendSuccess || sendDataToWebService(exportString.slice(thisStart,thisEnd), FILE_NAME+FILE_TYPE, stage, SOAP_URL, SOAP_ACTION)
+			sendSuccess = sendSuccess && sendDataToWebService(exportString.slice(thisStart,thisEnd), FILE_NAME+FILE_TYPE, stage, SOAP_URL, SOAP_ACTION)
+			firstPacket = false
 		}
 		while ( thisEnd < exportString.length )
 		
@@ -159,8 +163,8 @@ function sendDataToWebService(dataString, fileName, stage, dataServiceURL, dataS
 </tem:uploadFile>\
 </soapenv:Body>\
 </soapenv:Envelope>'
-
-	var postresp = aa.util.httpPostToSoapWebService(dataServiceURL, xmlRequest, "", "", dataServiceSoapAction);
+	aa.print(xmlRequest)
+	var postresp = aa.util.httpPostToSoapWebService(dataServiceURL, xmlRequest, username, password, dataServiceSoapAction);
 
 	if (postresp.getSuccess()) {
 	  var response = postresp.getOutput();
