@@ -86,6 +86,18 @@ try{
 		
 		//Create Occupancy Permit
 		parentId = createParent("CANALS","Occupancy","Permit","NA", capName)
+		/* //Update Permit ID to match New Record's ID*/
+		
+		newAltId = capIDString.slice(0, capIDString.indexOf("-A"))
+		
+		updateResult = aa.cap.updateCapAltID(parentId, newAltId)
+		if (!updateResult.getSuccess()) {
+			logDebug("***ERROR changing the altId to: " + newAltId + ": " + updateResult.getErrorMessage())
+		}
+		else {
+			logDebug("Successfully changed the altId from: " + newChildren[n].getCustomID() + " to: " + newAltId)
+		}
+		
 		
 		//Copy information from New to Permit record
 		copyAppSpecific(parentId)
