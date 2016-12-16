@@ -1,4 +1,9 @@
 try {
+	var SOAP_URL = "http://springdelivery3721.cloudapp.net/gis1/Service1.svc/soap"
+	var SOAP_URL = "" + aa.env.getValue("InterfaceAdapterURL");
+	var username = "" + aa.env.getValue("AdapterUsername");
+	var password = "" + aa.env.getValue("AdapterPassword");
+	var SOAP_ACTION = "http://tempuri.org/IService1/uploadFile"
 	var today = new Date()
 	var startTime = today.getTime();
 	var MAX_RECORDS = aa.cap.getCapIDList().getOutput().length
@@ -10,8 +15,8 @@ try {
 	var FILE_TYPE = ".csv"
 	var MAX_POST_LEN = 64000
 	
-	var SOAP_URL = "http://springdelivery3721.cloudapp.net/gis1/Service1.svc/soap"
-	var SOAP_ACTION = "http://tempuri.org/IService1/uploadFile"
+	
+	
 
 	/*var FILE_NAME = "GIS_"+today.getFullYear() + "-"
 	FILE_NAME += ("0"+(1+today.getMonth())).slice(-2) + "-" 
@@ -146,8 +151,8 @@ function sendDataToWebService(dataString, fileName, stage, dataServiceURL, dataS
 <soapenv:Header/>\
 <soapenv:Body>\
 <tem:uploadFile>\
-<tem:username>accelaGis</tem:username>\
-<tem:password>!Q@W#E$R5t</tem:password>\
+<tem:username>' + username + '</tem:username>\
+<tem:password>' + password +'</tem:password>\
 <tem:Filename>' + fileName + '</tem:Filename>\
 <tem:FileContents>' + dataString + '</tem:FileContents>\
 <tem:stage>' + stage + '</tem:stage>\
@@ -155,7 +160,7 @@ function sendDataToWebService(dataString, fileName, stage, dataServiceURL, dataS
 </soapenv:Body>\
 </soapenv:Envelope>'
 
-	var postresp = aa.util.httpPostToSoapWebService(dataServiceURL, xmlRequest, "accelaGis", "!Q@W#E$R5t", dataServiceSoapAction);
+	var postresp = aa.util.httpPostToSoapWebService(dataServiceURL, xmlRequest, "", "", dataServiceSoapAction);
 
 	if (postresp.getSuccess()) {
 	  var response = postresp.getOutput();
