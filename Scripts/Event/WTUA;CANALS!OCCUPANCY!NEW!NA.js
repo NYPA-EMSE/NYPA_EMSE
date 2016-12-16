@@ -95,7 +95,7 @@ try{
 			logDebug("***ERROR changing the altId to: " + newAltId + ": " + updateResult.getErrorMessage())
 		}
 		else {
-			logDebug("Successfully changed the altId from: " + newChildren[n].getCustomID() + " to: " + newAltId)
+			logDebug("Successfully changed the altId from: " + capIDString + " to: " + newAltId)
 		}
 		
 		
