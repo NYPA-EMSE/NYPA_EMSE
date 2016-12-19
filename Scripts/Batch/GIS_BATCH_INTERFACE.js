@@ -1,5 +1,3 @@
-
-
 try {
 	var SOAP_URL = "http://springdelivery3721.cloudapp.net/gis1/Service1.svc/soap"
 	var SOAP_URL = "" + aa.env.getValue("InterfaceAdapterURL");
@@ -121,7 +119,7 @@ try {
 		do {
 			thisStart = thisEnd
 			thisEnd += (firstPacket) ? 20 : MAX_POST_LEN
-			stage = (thisStart == 0) ? 0 : (thisEnd < exportString.length) ? 1 : 2
+			stage = (firstPacket) ? 0 : (thisEnd < exportString.length) ? 1 : 2
 			
 			//aa.print("\n\n"+(thisEnd < exportString.length) + ": "+ exportString.slice(thisStart,thisEnd))
 			sendSuccess = sendSuccess && sendDataToWebService(exportString.slice(thisStart,thisEnd), FILE_NAME+FILE_TYPE, stage, SOAP_URL, SOAP_ACTION)
@@ -163,7 +161,7 @@ function sendDataToWebService(dataString, fileName, stage, dataServiceURL, dataS
 </tem:uploadFile>\
 </soapenv:Body>\
 </soapenv:Envelope>'
-	aa.print(xmlRequest)
+	//aa.print(xmlRequest)
 	var postresp = aa.util.httpPostToSoapWebService(dataServiceURL, xmlRequest, username, password, dataServiceSoapAction);
 
 	if (postresp.getSuccess()) {
