@@ -14,7 +14,7 @@ try {
 	var MAX_RECORDS = aa.cap.getCapIDList().getOutput().length
 	var MAX_USE_CODES = 10
 	var DELIM = "|"
-	var NEW_LINE = (aa.env.getValue("BatchJobName") == "") ? "\r\n"
+	var NEW_LINE = "\r\n"
 
 	var TIMEOUT = 60*60
 	var FILE_NAME = "AccelaGIS"
