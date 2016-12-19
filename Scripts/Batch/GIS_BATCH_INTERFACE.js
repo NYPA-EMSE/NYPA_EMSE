@@ -1,5 +1,10 @@
+/* testing
+aa.env.setValue("InterfaceAdapterURL" , "http://springdelivery3721.cloudapp.net/gis1/Service1.svc/soap");
+aa.env.setValue("AdapterUsername" , "accelaGis");
+aa.env.setValue("AdapterPassword" , "!Q@W#E$R5t")
+*/
+
 try {
-	var SOAP_URL = "http://springdelivery3721.cloudapp.net/gis1/Service1.svc/soap"
 	var SOAP_URL = "" + aa.env.getValue("InterfaceAdapterURL");
 	var username = "" + aa.env.getValue("AdapterUsername");
 	var password = "" + aa.env.getValue("AdapterPassword");
@@ -9,26 +14,27 @@ try {
 	var MAX_RECORDS = aa.cap.getCapIDList().getOutput().length
 	var MAX_USE_CODES = 10
 	var DELIM = "|"
-	var NEW_LINE = (aa.env.getValue("BatchJobName") == "") ? "\r\n" : "<br>"
-	
-	var TIMEOUT = 59*60
+	var NEW_LINE = (aa.env.getValue("BatchJobName") == "") ? "\r\n"
+
+	var TIMEOUT = 60*60
+	var FILE_NAME = "AccelaGIS"
 	var FILE_TYPE = ".csv"
-	var MAX_POST_LEN = 64000
-	
-	
-	
+	var MAX_POST_LEN = 32768
+
+
+
 
 	/*var FILE_NAME = "GIS_"+today.getFullYear() + "-"
-	FILE_NAME += ("0"+(1+today.getMonth())).slice(-2) + "-" 
-	FILE_NAME += ("0"+today.getDate()).slice(-2) + "-" 
-	FILE_NAME += ("0"+today.getHours()).slice(-2) + "-" 
+	FILE_NAME += ("0"+(1+today.getMonth())).slice(-2) + "-"
+	FILE_NAME += ("0"+today.getDate()).slice(-2) + "-"
+	FILE_NAME += ("0"+today.getHours()).slice(-2) + "-"
 	FILE_NAME += ("0"+today.getMinutes()).slice(-2)*/
-	
+
 	//NYPA requested a static filename
-	FILE_NAME = "AccelaGIS"
-	
+
+
 	var processTimeout = false
-	
+
 	capList = aa.cap.getByAppType("CANALS","Occupancy","Permit","NA",0,MAX_RECORDS).getOutput()
 
 	HEADER = ["CANAL_DIVISION",
@@ -37,7 +43,7 @@ try {
 		"CURRENT_ANNUAL",
 		"GPS_START_LAT",
 		"GPS_START_LON",
-		"PERIODIC_FEE_BASED_ON",
+		"PERIODIC_FEE_BASED_ON", //Not used as of 12/19/2016
 		"PERMIT_AREA",
 		"PERMIT_NAME",
 		"PERMIT_NUMBER",
@@ -58,13 +64,14 @@ try {
 	PERIODIC_FEE_BASED_ON = "Periodic Fee Based On"
 	PERMIT_AREA = "Permit Area"
 	PLATE_NO = "Plate #"
-	SECTION = "Section" 
+	SECTION = "Section"
 	USE_TYPE = "Use Type"
 
 	var GIS_Export = []
 	GIS_Export.push(HEADER.join(DELIM))
 
 	for (i in capList) {
+		//if (i>=20) break
 		if (elapsed(startTime) >= TIMEOUT) {
 			processTimeout = true
 			break
@@ -81,7 +88,8 @@ try {
 				newLine.push(aa.appSpecificInfo.getAppSpecificInfos(capId,CURRENT_ANNUAL).getOutput()[0].getChecklistComment() )
 				newLine.push(aa.appSpecificInfo.getAppSpecificInfos(capId,GPS_START_LAT).getOutput()[0].getChecklistComment() )
 				newLine.push(aa.appSpecificInfo.getAppSpecificInfos(capId,GPS_START_LON).getOutput()[0].getChecklistComment() )
-				newLine.push(aa.appSpecificInfo.getAppSpecificInfos(capId,PERIODIC_FEE_BASED_ON).getOutput()[0].getChecklistComment() )
+				//newLine.push(aa.appSpecificInfo.getAppSpecificInfos(capId,PERIODIC_FEE_BASED_ON).getOutput()[0].getChecklistComment() ) //removed 12/19/2016
+				newLine.push(null)
 				newLine.push(aa.appSpecificInfo.getAppSpecificInfos(capId,PERMIT_AREA).getOutput()[0].getChecklistComment() )
 				newLine.push(cap.getSpecialText())
 				newLine.push(capId.getCustomID())
@@ -89,7 +97,7 @@ try {
 				newLine.push(""+cap.getCapStatus())
 				newLine.push(aa.appSpecificInfo.getAppSpecificInfos(capId,PLATE_NO).getOutput()[0].getChecklistComment() )
 				newLine.push(aa.appSpecificInfo.getAppSpecificInfos(capId,SECTION).getOutput()[0].getChecklistComment() )
-				
+
 				asitObj = aa.appSpecificTableScript.getAppSpecificTableModel(capId,"USE CODE")
 				asit = asitObj.getOutput()
 				asitIter = asit.getTableField().iterator()
@@ -97,9 +105,9 @@ try {
 					if (asitIter.hasNext()) newLine.push(asitIter.next())
 					else newLine.push(null)
 				}
-				
+
 				newLine.push(aa.appSpecificInfo.getAppSpecificInfos(capId,USE_TYPE).getOutput()[0].getChecklistComment() )
-				
+
 				GIS_Export.push(newLine.join(DELIM))
 			}
 		}
@@ -108,8 +116,8 @@ try {
 			aa.print("**ERROR: GIS Interface Skipping " + capId.getCustomID() + ": " + errr)
 		}
 	}
-	
-	
+
+
 	if (!processTimeout) {
 		exportString = GIS_Export.join(NEW_LINE);
 		thisEnd = 0;
@@ -120,13 +128,13 @@ try {
 			thisStart = thisEnd
 			thisEnd += (firstPacket) ? 20 : MAX_POST_LEN
 			stage = (firstPacket) ? 0 : (thisEnd < exportString.length) ? 1 : 2
-			
-			//aa.print("\n\n"+(thisEnd < exportString.length) + ": "+ exportString.slice(thisStart,thisEnd))
-			sendSuccess = sendSuccess && sendDataToWebService(exportString.slice(thisStart,thisEnd), FILE_NAME+FILE_TYPE, stage, SOAP_URL, SOAP_ACTION)
+
+			aa.print("\n\n"+stage + ": "+ exportString.slice(thisStart,thisEnd))
+			//sendSuccess = sendSuccess && sendDataToWebService(exportString.slice(thisStart,thisEnd), FILE_NAME+FILE_TYPE, stage, SOAP_URL, SOAP_ACTION)
 			firstPacket = false
 		}
 		while ( thisEnd < exportString.length )
-		
+
 		if (sendSuccess) aa.print("File successfully sent")
 		else aa.print("Error: File was not properly sent")
 		aa.print("Runtime:" + elapsed(startTime))
@@ -148,7 +156,7 @@ function elapsed(stTime) {
 	return ((thisTime - stTime) / 1000)
 }
 
-function sendDataToWebService(dataString, fileName, stage, dataServiceURL, dataServiceSoapAction) {		
+function sendDataToWebService(dataString, fileName, stage, dataServiceURL, dataServiceSoapAction) {
 	xmlRequest = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">\
 <soapenv:Header/>\
 <soapenv:Body>\
@@ -161,12 +169,13 @@ function sendDataToWebService(dataString, fileName, stage, dataServiceURL, dataS
 </tem:uploadFile>\
 </soapenv:Body>\
 </soapenv:Envelope>'
-	//aa.print(xmlRequest)
+
+	aa.print("<br>"+xmlRequest +"<br>")
 	var postresp = aa.util.httpPostToSoapWebService(dataServiceURL, xmlRequest, username, password, dataServiceSoapAction);
 
 	if (postresp.getSuccess()) {
 	  var response = postresp.getOutput();
-	  aa.print("Response: " + response); 
+	  aa.print("Response: " + response);
 	  return true
 	}
 	else {
@@ -175,4 +184,3 @@ function sendDataToWebService(dataString, fileName, stage, dataServiceURL, dataS
 	}
 	return false
 }
-
