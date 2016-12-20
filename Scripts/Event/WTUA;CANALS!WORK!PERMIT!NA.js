@@ -1,12 +1,16 @@
 /**************************************************************************************************************
-*	ID-1 - Invoice Work Permit Fee and 
+*	ID-1 - Invoice Work Permit Fee and
 *	Mike Linscheid
 */
 try{
 	if (wfTask == "DPE Review" && wfStatus == "Complete" ) {
-		//TODO
-		//updateFee("BLD_040","BLD_GENERAL","FINAL",200,"Y","N")
-		
+		if (feeExists("CNL-WP-FEE","NEW")) {
+			invoiceFee("CNL-WP-FEE","FINAL")
+		}
+		else if (!feeExists("CNL-WP-FEE","INVOICED")) {
+			updateFee("CNL-WP-FEE","CANAL-WP-N","FINAL",1,"Y")
+		}
+
 		editAppSpecific("Fees Locked","CHECKED")
 	}
 }
