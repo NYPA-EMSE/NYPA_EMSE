@@ -1,9 +1,3 @@
-/* testing
-aa.env.setValue("InterfaceAdapterURL" , "http://springdelivery3721.cloudapp.net/gis1/Service1.svc/soap");
-aa.env.setValue("AdapterUsername" , "accelaGis");
-aa.env.setValue("AdapterPassword" , "!Q@W#E$R5t")
-*/
-
 try {
 	var SOAP_URL = "" + aa.env.getValue("InterfaceAdapterURL");
 	var username = "" + aa.env.getValue("AdapterUsername");
