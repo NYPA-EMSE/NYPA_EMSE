@@ -123,14 +123,14 @@ try {
 		thisEnd = 0;
 		sendSuccess = true;
 		firstPacket = true
-		aa.print("Attempting to send file with " + exportString.length + " lines.")
+		aa.print("Attempting to send file for " + (GIS_Export.length-1) + " records.")
 		do {
 			thisStart = thisEnd
 			thisEnd += (firstPacket) ? 20 : MAX_POST_LEN
 			stage = (firstPacket) ? 0 : (thisEnd < exportString.length) ? 1 : 2
 
-			aa.print("\n\n"+stage + ": "+ exportString.slice(thisStart,thisEnd))
-			//sendSuccess = sendSuccess && sendDataToWebService(exportString.slice(thisStart,thisEnd), FILE_NAME+FILE_TYPE, stage, SOAP_URL, SOAP_ACTION)
+			//aa.print("\n\n"+stage + ": "+ exportString.slice(thisStart,thisEnd))
+			sendSuccess = sendSuccess && sendDataToWebService(exportString.slice(thisStart,thisEnd), FILE_NAME+FILE_TYPE, stage, SOAP_URL, SOAP_ACTION)
 			firstPacket = false
 		}
 		while ( thisEnd < exportString.length )
@@ -170,7 +170,7 @@ function sendDataToWebService(dataString, fileName, stage, dataServiceURL, dataS
 </soapenv:Body>\
 </soapenv:Envelope>'
 
-	aa.print("<br>"+xmlRequest +"<br>")
+	//aa.print("<br>"+xmlRequest +"<br>")
 	var postresp = aa.util.httpPostToSoapWebService(dataServiceURL, xmlRequest, username, password, dataServiceSoapAction);
 
 	if (postresp.getSuccess()) {
