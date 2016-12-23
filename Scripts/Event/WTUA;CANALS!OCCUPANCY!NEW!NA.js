@@ -105,6 +105,7 @@ try{
 		updateResult = aa.cap.updateCapAltID(parentId, newAltId)
 		if (!updateResult.getSuccess()) {
 			logDebug("***ERROR changing the altId to: " + newAltId + ": " + updateResult.getErrorMessage())
+			newAltId = ""+parentId.getCustomID()
 		}
 		else {
 			logDebug("Successfully changed the altId from: " + capIDString + " to: " + newAltId)
@@ -137,7 +138,7 @@ try{
 
 		var eParams = aa.util.newHashtable();
 		addParameter(eParams, "$$alias$$", parentCap.getCapType().getAlias())
-		addParameter(eParams, "$$altId$$",""+parentId.getCustomID())
+		addParameter(eParams, "$$altId$$",newAltId)
 		addParameter(eParams, "$$applicantName$$", applicantName)
 		addParameter(eParams, "$$status$$", ""+parentCap.getCapStatus())
 		addParameter(eParams, "$$userId$$", currentUserID)
