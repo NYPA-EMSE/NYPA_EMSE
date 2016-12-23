@@ -2,6 +2,7 @@ try {
 	var SOAP_URL = "" + aa.env.getValue("InterfaceAdapterURL");
 	var username = "" + aa.env.getValue("AdapterUsername");
 	var password = "" + aa.env.getValue("AdapterPassword");
+	var showFileData = "" + aa.env.getValue("showFileData");
 	var SOAP_ACTION = "http://tempuri.org/IService1/uploadFile"
 	var today = new Date()
 	var startTime = today.getTime();
@@ -9,23 +10,18 @@ try {
 	var MAX_USE_CODES = 10
 	var DELIM = "|"
 	var NEW_LINE = "\r\n"
+	var DEBUG_NEW_LINE = ("" + aa.env.getValue("BatchJobName") == "") ? NEW_LINE : "<br>"
 
 	var TIMEOUT = 60*60
-	var FILE_NAME = "AccelaGIS"
+	var FILE_NAME = "AccelaGIS" 	//NYPA requested a static filename
 	var FILE_TYPE = ".csv"
 	var MAX_POST_LEN = 32768
-
-
-
 
 	/*var FILE_NAME = "GIS_"+today.getFullYear() + "-"
 	FILE_NAME += ("0"+(1+today.getMonth())).slice(-2) + "-"
 	FILE_NAME += ("0"+today.getDate()).slice(-2) + "-"
 	FILE_NAME += ("0"+today.getHours()).slice(-2) + "-"
 	FILE_NAME += ("0"+today.getMinutes()).slice(-2)*/
-
-	//NYPA requested a static filename
-
 
 	var processTimeout = false
 
@@ -131,6 +127,12 @@ try {
 
 		if (sendSuccess) aa.print("File successfully sent")
 		else aa.print("Error: File was not properly sent")
+
+		if (showFileData == "Y") {
+			aa.print(DEBUG_NEW_LINE+DEBUG_NEW_LINE+"+---------------------------------------------------------------------------------------------------------------+"+DEBUG_NEW_LINE+"| GIS Data"+DEBUG_NEW_LINE+"+---------------------------------------------------------------------------------------------------------------+")
+			aa.print(GIS_Export.join(DEBUG_NEW_LINE))
+			aa.print(DEBUG_NEW_LINE+DEBUG_NEW_LINE)
+		}
 		aa.print("Runtime:" + elapsed(startTime))
 	}
 	else {
