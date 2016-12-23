@@ -104,7 +104,7 @@ try{
 
 		updateResult = aa.cap.updateCapAltID(parentId, newAltId)
 		if (!updateResult.getSuccess()) {
-			logDebug("***WARNING the altId was NOT updated to: " + newAltId)
+			logDebug("WARNING: the altId was NOT updated to: " + newAltId)
 			newAltId = ""+parentId.getCustomID()
 		}
 		else {
