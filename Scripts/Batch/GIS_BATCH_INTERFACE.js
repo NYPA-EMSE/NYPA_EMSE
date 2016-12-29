@@ -109,7 +109,7 @@ try {
 
 
 	if (!processTimeout) {
-		exportString = escape(GIS_Export.join(NEW_LINE));
+		exportString = GIS_Export.join(NEW_LINE).replace(/&/g, "&amp;")
 		thisEnd = 0;
 		sendSuccess = true;
 		firstPacket = true
