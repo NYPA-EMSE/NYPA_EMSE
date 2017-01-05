@@ -70,7 +70,7 @@ logDebug("=========================");
 | Start: BATCH PARAMETERS
 |
 /------------------------------------------------------------------------------------------------------------------------------------------*/
-/* test parameters */
+/* test parameters *
 aa.env.setValue("lookAheadMonths", "12");
 aa.env.setValue("Custom_Field_Name", "Next Invoice Date");
 aa.env.setValue("Custom_Field_Group", "EFFECTIVE DATE");
