@@ -176,14 +176,14 @@ function mainProcess() {
 				var appTypeString = appTypeResult.toString();
 				appTypeArray = appTypeString.split("/");
 
-				if (!appMatch("CANALS/Occupancy/Permit/NA",capId) && !appMatch("CANALS/Occupancy/Lease/NA",capId)) {
+				if (!appMatch("CANALS/Occupancy/Permit/NA",capId) && !appMatch("CANALS/Lease/NA/NA",capId)) {
 					logDebug("Skipping "+altId+" bescause it is not CANALS/Occupancy/Permit/NA or CANALS/Occupancy/Lease/NA" );
 					continue;
 				}
 
 				capCount++;
 				asiExpDate = getAppSpecific(asiName)
-				logDebug("Processing " + altId + "(Next Invoice Date: " + asiExpDate +")");
+				logDebug("Processing " + altId + " (Next Invoice Date: " + asiExpDate +")");
 
 				childId = createChild("CANALS", "Occupancy", "Invoice", "NA", "Invoice created on " + jsDateToASIDate(startDate), capId)
 				AInfo = []
@@ -200,7 +200,7 @@ function mainProcess() {
 				try {
 					nextInvDate = new Date(getAppSpecific("Next Invoice Date"))
 				} catch(err){
-					//use this month as default
+					//use current month as default
 				}
 
 				var addMonths = 12
