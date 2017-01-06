@@ -2,9 +2,11 @@
 *	Mike Linscheid
 */
 try{
-	addFee("CNL-OC-INV", "CANAL-OC-I", "FINAL", 1, "Y")
+	showMessage = true;
+	cancel = true;
+	comment("Manual invoice creation is not permited.")
 }
 catch (err) {
-	logDebug("A JavaScript Error occurred: ASA:CANALS/Occupancy/Invoice/NA: " + err.message);
+	logDebug("A JavaScript Error occurred: ASB:CANALS/Occupancy/Invoice/NA: " + err.message);
 	logDebug(err.stack)
 }
