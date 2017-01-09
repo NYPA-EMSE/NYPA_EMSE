@@ -262,7 +262,7 @@ try {
 			stage = (firstPacket) ? 0 : (thisEnd < exportString.length) ? 1 : 2
 
 			//logDebug("\n\n"+stage + ": "+ exportString.slice(thisStart,thisEnd))
-			//sendSuccess = sendSuccess && sendDataToWebService(exportString.slice(thisStart,thisEnd), FILE_NAME+FILE_TYPE, stage, SOAP_URL, SOAP_ACTION)
+			sendSuccess = sendSuccess && sendDataToWebService(exportString.slice(thisStart,thisEnd), FILE_NAME+FILE_TYPE, stage, SOAP_URL, SOAP_ACTION)
 			firstPacket = false
 		}
 		while ( thisEnd < exportString.length )
