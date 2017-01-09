@@ -205,15 +205,17 @@ try {
 
 				///////////// Get Parent Alt ID /////////////
 				parentAltId = null
+				rType = null
 				try {
-					parentAltId = getParent().getCustomID()
+					parentId = getParent()
+					parentAltId = parentId.getCustomID()
+					var parCap = aa.cap.getCap(parentId).getOutput();
+					rType = (""+parCap.getCapType().getType()  == "Lease") ? "LS" : "OC"
 				} catch (errrr) {
 					// no parent
 					parentAltId = null
+					rType = null
 				}
-
-				///////////// Get Record Type /////////////
-				rType = (""+cap.getCapType().getType()  == "Lease") ? "LS" : "OC"
 
 				///////////// Create SAP File Line /////////////
 				newLine.push(cNum)
