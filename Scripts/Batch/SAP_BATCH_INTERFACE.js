@@ -3,10 +3,6 @@
 *	Author: Mike Linscheid
 *
 *	Description: Send Invoice data from Occupancy Invoice records to an adapter that will then move the data as a file to an SFTP server
-
-https://testing.pipeestimating.com/SAP/Service1.svc/soap
-accelaSAP
-!Q@W#E$R5t
 ***/
 
 eval(getScriptText("INCLUDES_ACCELA_FUNCTIONS"));
