@@ -35,9 +35,7 @@ eval(getMasterScriptText("INCLUDES_ACCELA_FUNCTIONS"));
 eval(getScriptText("INCLUDES_BATCH"));
 eval(getMasterScriptText("INCLUDES_CUSTOM"));
 
-override = "function logDebug(dstr){ if(showDebug) { if (batchJobName!="") {dstr = dstr + '<br>'}; aa.print(dstr); }}"
-
-
+override = "function logDebug(dstr){ if(showDebug) { aa.print(dstr); emailText+= dstr + \"<br>\"; } }";
 eval(override);
 
 
@@ -139,7 +137,7 @@ if (emailAddress.length && emailLog=="Y"){
 if (showDebug) {
 	aa.eventLog.createEventLog("DEBUG", "Batch Process", batchJobName, aa.date.getCurrentDate(), aa.date.getCurrentDate(),"", emailText ,batchJobID);
 }
-logDebug(emailText);
+//logDebug(emailText);
 /*---------------------------------------------------------------------------------------------------------/
 | <===========END=Main=Loop================>
 /---------------------------------------------------------------------------------------------------------*/
@@ -157,7 +155,6 @@ function mainProcess() {
 		else {
 			myCaps = capResult.getOutput();
 			logDebug("Found " + myCaps.length + " records to process");
-			return
 
 			for (myCapsXX in myCaps) {
 				if (elapsed() > maxSeconds) { // only continue if time hasn't expired
