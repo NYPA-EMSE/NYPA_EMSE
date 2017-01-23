@@ -16,7 +16,7 @@ var debugText = "";
 var showDebug = false;
 var showMessage = false;
 var message = "";
-var maxSeconds = 4.5 * 60;
+var maxSeconds = 60 * 60;
 var br = "<br>";
 var publicUser = false
 
@@ -35,7 +35,7 @@ eval(getMasterScriptText("INCLUDES_ACCELA_FUNCTIONS"));
 eval(getScriptText("INCLUDES_BATCH"));
 eval(getMasterScriptText("INCLUDES_CUSTOM"));
 
-override = "function logDebug(dstr){ if(showDebug) { aa.print(dstr); emailText+= dstr + \"<br>\"; } }";
+override = "function logDebug(dstr){ if(showDebug) { emailText+= dstr + \"<br>\"; } }";
 eval(override);
 
 
@@ -137,7 +137,7 @@ if (emailAddress.length && emailLog=="Y"){
 if (showDebug) {
 	aa.eventLog.createEventLog("DEBUG", "Batch Process", batchJobName, aa.date.getCurrentDate(), aa.date.getCurrentDate(),"", emailText ,batchJobID);
 }
-//logDebug(emailText);
+logDebug(emailText);
 /*---------------------------------------------------------------------------------------------------------/
 | <===========END=Main=Loop================>
 /---------------------------------------------------------------------------------------------------------*/
