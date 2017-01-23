@@ -71,7 +71,7 @@ logDebug("=========================");
 |
 /------------------------------------------------------------------------------------------------------------------------------------------*/
 /* test parameters *
-aa.env.setValue("lookAheadMonths", "12");
+aa.env.setValue("lookAheadMonths", "0");
 aa.env.setValue("Custom_Field_Name", "Next Invoice Date");
 aa.env.setValue("Custom_Field_Group", "EFFECTIVE DATE");
 aa.env.setValue("emailLog", "N");
@@ -137,7 +137,7 @@ if (emailAddress.length && emailLog=="Y"){
 if (showDebug) {
 	aa.eventLog.createEventLog("DEBUG", "Batch Process", batchJobName, aa.date.getCurrentDate(), aa.date.getCurrentDate(),"", emailText ,batchJobID);
 }
-logDebug(emailText);
+//logDebug(emailText);
 /*---------------------------------------------------------------------------------------------------------/
 | <===========END=Main=Loop================>
 /---------------------------------------------------------------------------------------------------------*/
@@ -185,16 +185,21 @@ function mainProcess() {
 				asiExpDate = getAppSpecific(asiName)
 				logDebug("Processing " + altId + " (Next Invoice Date: " + asiExpDate +")");
 
-				childId = createChild("CANALS", "Occupancy", "Invoice", "NA", "Invoice created on " + jsDateToASIDate(startDate), capId)
-				AInfo = []
-				loadAppSpecific(AInfo, capId);
-				copyAppSpecific(childId)
-				copyASITables(capId, childId)
-				aa.cap.copyCapWorkDesInfo(capId, childId);
-				aa.cap.copyCapDetailInfo(capId, childId);
-				copyAdditionalInfo(capId, childId);
+				try {
+					childId = createChild("CANALS", "Occupancy", "Invoice", "NA", "Invoice created on " + jsDateToASIDate(startDate), capId)
+					AInfo = []
+					loadAppSpecific(AInfo, capId);
+					copyAppSpecific(childId)
+					copyASITables(capId, childId)
+					aa.cap.copyCapWorkDesInfo(capId, childId);
+					aa.cap.copyCapDetailInfo(capId, childId);
+					copyAdditionalInfo(capId, childId);
 
-				addFee("CNL-OC-INV", "CANAL-OC-I", "FINAL", 1, "Y", childId)
+					addFee("CNL-OC-INV", "CANAL-OC-I", "FINAL", 1, "Y", childId)
+				}
+				catch(errrr) {
+					logDebug("Error creating invoice record for record "+altId+": "+errrr)
+				}
 
 				nextInvDate = new Date(fromJSDate.getTime())
 				try {
