@@ -172,6 +172,13 @@ function mainProcess() {
 				}
 				cap = aa.cap.getCap(capId).getOutput();
 				altId = capId.getCustomID();
+
+				var capStatus = ""+cap.getCapStatus()
+				if (capStatus == "Active" || capStatus == "Collections") {
+					logDebug("Skipping "+altId+" bescause its status is not Active or Collections" );
+					continue;
+				}
+				
 				var appTypeResult = cap.getCapType();
 				var appTypeString = appTypeResult.toString();
 				appTypeArray = appTypeString.split("/");
