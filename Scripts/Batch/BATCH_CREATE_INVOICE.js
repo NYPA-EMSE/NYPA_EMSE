@@ -35,7 +35,7 @@ eval(getMasterScriptText("INCLUDES_ACCELA_FUNCTIONS"));
 eval(getScriptText("INCLUDES_BATCH"));
 eval(getMasterScriptText("INCLUDES_CUSTOM"));
 
-override = "function logDebug(dstr){ if(showDebug) { aa.print(dstr); emailText+= dstr + \"<br>\"; } }";
+override = "function logDebug(dstr){ if(showDebug) { aa.print(dstr+'<br>'); emailText+= dstr + \"<br>\"; } }";
 eval(override);
 
 
@@ -174,11 +174,11 @@ function mainProcess() {
 				altId = capId.getCustomID();
 
 				var capStatus = ""+cap.getCapStatus()
-				if (capStatus == "Active" || capStatus == "Collections") {
-					logDebug("Skipping "+altId+" bescause its status is not Active or Collections" );
+				if (capStatus != "Active" && capStatus != "Collections") {
+					logDebug("Skipping "+altId+" bescause it has a status of '"+capStatus+"', not 'Active' or 'Collections'" );
 					continue;
 				}
-				
+
 				var appTypeResult = cap.getCapType();
 				var appTypeString = appTypeResult.toString();
 				appTypeArray = appTypeString.split("/");
