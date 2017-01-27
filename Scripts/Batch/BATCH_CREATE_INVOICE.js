@@ -203,37 +203,36 @@ function mainProcess() {
 					copyAdditionalInfo(capId, childId);
 
 					addFee("CNL-OC-INV", "CANAL-OC-I", "FINAL", 1, "Y", childId)
+					nextInvDate = new Date(fromJSDate.getTime())
+					try {
+						nextInvDate = new Date(getAppSpecific("Next Invoice Date"))
+					} catch(err){
+						//use current month as default
+					}
+
+					var addMonths = 12
+					switch (""+getAppSpecific("Permit Term")) {
+						case "ANNUAL":
+							addMonths = 12;
+							break;
+						case "SEMI-ANNUAL":
+							addMonths = 6;
+							break;
+						case "QUARTERLY":
+							addMonths = 3;
+							break;
+						case "MONTHLY":
+							addMonths = 1;
+							break;
+					}
+					nextInvDate.setMonth(nextInvDate.getMonth() + addMonths)
+
+					editAppSpecific("Last Invoice Date", jsDateToASIDate(startDate), capId)
+					editAppSpecific("Next Invoice Date", jsDateToASIDate(nextInvDate), capId)
 				}
 				catch(errrr) {
 					logDebug("Error creating invoice record for record "+altId+": "+errrr)
 				}
-
-				nextInvDate = new Date(fromJSDate.getTime())
-				try {
-					nextInvDate = new Date(getAppSpecific("Next Invoice Date"))
-				} catch(err){
-					//use current month as default
-				}
-
-				var addMonths = 12
-				switch (""+getAppSpecific("Permit Term")) {
-					case "ANNUAL":
-						addMonths = 12;
-						break;
-					case "SEMI-ANNUAL":
-						addMonths = 6;
-						break;
-					case "QUARTERLY":
-						addMonths = 3;
-						break;
-					case "MONTHLY":
-						addMonths = 1;
-						break;
-				}
-				nextInvDate.setMonth(nextInvDate.getMonth() + addMonths)
-
-				editAppSpecific("Last Invoice Date", jsDateToASIDate(startDate), capId)
-				editAppSpecific("Next Invoice Date", jsDateToASIDate(nextInvDate), capId)
 			}
 
 			logDebug("=========================");
