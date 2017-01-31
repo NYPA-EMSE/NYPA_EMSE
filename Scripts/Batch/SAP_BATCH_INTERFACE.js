@@ -268,7 +268,7 @@ try {
 		if (sendSuccess) logDebug("File successfully sent")
 		else logDebug("Error: File was not properly sent")
 
-		if (showFileData == "Y") {
+		if (showFileData == "Y" || !sendSuccess) {
 			logDebug(DEBUG_NEW_LINE+DEBUG_NEW_LINE+"+---------------------------------------------------------------------------------------------------------------+"+DEBUG_NEW_LINE+"| SAP Data"+DEBUG_NEW_LINE+"+---------------------------------------------------------------------------------------------------------------+")
 			logDebug(SAP_Export.join(DEBUG_NEW_LINE))
 			logDebug(DEBUG_NEW_LINE+DEBUG_NEW_LINE)
