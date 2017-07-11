@@ -17,7 +17,7 @@ if (wfStatus == "Void" || wfStatus == "Withdrawn" || wfStatus == "Denied")
 	for (var i in wfObj) 
 	{
 		fTask = wfObj[i];
-		if (fTask.getTaskDescription().toUpperCase().equals(wfstr.toUpperCase()) && fTask.getProcessCode().equals(processName))) 
+		if (fTask.getTaskDescription().toUpperCase().equals(wfstr.toUpperCase()) && fTask.getProcessCode().equals(processName))
 		{
 			var taskUserObj = fTask.getTaskItem().getAssignedUser()
 		}
