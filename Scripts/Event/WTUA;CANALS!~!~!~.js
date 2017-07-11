@@ -12,7 +12,6 @@ if (wfStatus == "Void" || wfStatus == "Withdrawn" || wfStatus == "Denied")
 	else 
 	{
 		logDebug("**ERROR: Failed to get workflow object: " + s_capResult.getErrorMessage());
-		return false;
 	}
 	for (var i in wfObj) 
 	{
