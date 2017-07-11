@@ -3,8 +3,7 @@ showDebug = true;
 
 if (wfStatus == "Void" || wfStatus == "Withdrawn" || wfStatus == "Denied") 
 {
-	var processName = "CANALS-OCC-NEW";
-	var workflowResult = aa.workflow.getTaskItems(capId, wfstr, processName, null, null, null);
+	var workflowResult = aa.workflow.getTaskItems(capId, wfTask, wfProcess, null, null, null);
 	if (workflowResult.getSuccess())
 	{
 		wfObj = workflowResult.getOutput();
@@ -16,7 +15,7 @@ if (wfStatus == "Void" || wfStatus == "Withdrawn" || wfStatus == "Denied")
 	for (var i in wfObj) 
 	{
 		fTask = wfObj[i];
-		if (fTask.getTaskDescription().toUpperCase().equals(wfstr.toUpperCase()) && fTask.getProcessCode().equals(processName))
+		if (fTask.getTaskDescription().toUpperCase().equals(wfTask.toUpperCase()) && fTask.getProcessCode().equals(wfProcess))
 		{
 			var taskUserObj = fTask.getTaskItem().getAssignedUser()
 		}
