@@ -24,7 +24,6 @@ if (wfStatus == "Void" || wfStatus == "Withdrawn" || wfStatus == "Denied")
 	var eParams = aa.util.newHashtable();
 	addParameter(eParams, "$$alias$$", cap.getCapType().getAlias());
 	addParameter(eParams, "$$altId$$",capIDString);
-	addParameter(eParams, "$$applicantName$$", applicantName);
 	addParameter(eParams, "$$wfStatus", wfStatus);
 	PAemailList = getUserEmailsByTitle("Permit Administrator");
 	logDebug(PAemailList.join(","));
