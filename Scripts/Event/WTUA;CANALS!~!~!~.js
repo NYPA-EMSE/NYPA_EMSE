@@ -1,6 +1,5 @@
 
-showDebug = true;
-
+var assignEmail = "";
 if (wfStatus == "Void" || wfStatus == "Withdrawn" || wfStatus == "Denied") 
 {
 	var workflowResult = aa.workflow.getTaskItems(capId, wfTask, wfProcess, null, null, null);
@@ -18,7 +17,7 @@ if (wfStatus == "Void" || wfStatus == "Withdrawn" || wfStatus == "Denied")
 		if (fTask.getTaskDescription().toUpperCase().equals(wfTask.toUpperCase()) && fTask.getProcessCode().equals(wfProcess))
 		{
 			var taskUserObj = fTask.getTaskItem().getAssignedUser()
-			debugObject(taskUserObj);
+			assignEmail = taskUserObj.getEmail();
 		}
 	}
 	var emailTemplateName = "CANAL_WFCANCELED"
@@ -30,6 +29,13 @@ if (wfStatus == "Void" || wfStatus == "Withdrawn" || wfStatus == "Denied")
 	logDebug(PAemailList.join(","));
 	for (e in PAemailList)
 	{
-		//sendNotification(sysFromEmail, PAemailList[e], "", emailTemplateName, eParams, null);
+		if (!matches(assignEmail, null, undefined, ""))
+		{
+			//sendNotification(sysFromEmail, PAemailList[e], assignEmail, emailTemplateName, eParams, null);
+		}
+		else
+		{
+			//sendNotification(sysFromEmail, PAemailList[e], "", emailTemplateName, eParams, null);
+		}
 	}
 }

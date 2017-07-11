@@ -7,11 +7,10 @@ if (wfStatus == "Void" || wfStatus == "Withdrawn" || wfStatus == "Denied")
 	addParameter(eParams, "$$altId$$",capIDString);
 	addParameter(eParams, "$$applicantName$$", applicantName);
 	addParameter(eParams, "$$wfStatus$$", capStatus);
-	//addParameter(eParams, "$$userId$$", currentUserID);
 	PAemailList = getUserEmailsByTitle("Permit Administrator");
 	logDebug(PAemailList.join(","));
 	for (e in PAemailList)
 	{
-		sendNotification(sysFromEmail, PAemailList[e], "", emailTemplateName, eParams, null);
+		//sendNotification(sysFromEmail, PAemailList[e], "", emailTemplateName, eParams, null);
 	}
 }
