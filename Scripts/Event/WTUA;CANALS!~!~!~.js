@@ -18,6 +18,7 @@ if (wfStatus == "Void" || wfStatus == "Withdrawn" || wfStatus == "Denied")
 		if (fTask.getTaskDescription().toUpperCase().equals(wfTask.toUpperCase()) && fTask.getProcessCode().equals(wfProcess))
 		{
 			var taskUserObj = fTask.getTaskItem().getAssignedUser()
+			debugObject(taskUserObj);
 		}
 	}
 	var emailTemplateName = "CANAL_WFCANCELED"
