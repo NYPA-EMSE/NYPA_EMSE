@@ -68,9 +68,6 @@ function mainProcess()
 {
 	var fromDate = aa.date.getCurrentDate();
 	var toDate = aa.date.getScriptDateTime(aa.util.parseDate((startDate.getMonth() + 1) + "/" + startDate.getDate() + "/" + (startDate.getFullYear() + 3)));
-	debugObject(fromDate);
-	debugObject(toDate);
-	/*
 	var capIdList = aa.cap.getCapIDsByAppSpecificInfoDateRange("EFFECTIVE DATE", "Next Invoice Date", fromDate, toDate);
 	if (capIdList.getSuccess()) 
 	{
@@ -99,6 +96,7 @@ function mainProcess()
 				var appTypeResult = cap.getCapType();
 				var appTypeString = appTypeResult.toString();
 				var appTypeArray = appTypeString.split("/");
+				/*
 				if(appTypeArray[0] == "PublicWorks" && appTypeArray[1] == "Bond" && appTypeArray[2] == "NA" && appTypeArray[3] == "NA") 
 				{
 					capStatus = cap.getCapStatus();
@@ -126,6 +124,7 @@ function mainProcess()
 						
 					}
 				}
+				*/
 			}
 		}
 	}
@@ -134,7 +133,6 @@ function mainProcess()
 		logDebug("ERROR: Retrieving permits: " + wfList.getErrorType() + ":" + wfList.getErrorMessage());
 		return false;
 	}
-	*/
 }
 
 /*------------------------------------------------------------------------------------------------------/
