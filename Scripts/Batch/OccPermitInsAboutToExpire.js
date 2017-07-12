@@ -96,35 +96,35 @@ function mainProcess()
 				var appTypeResult = cap.getCapType();
 				var appTypeString = appTypeResult.toString();
 				var appTypeArray = appTypeString.split("/");
-				/*
-				if(appTypeArray[0] == "PublicWorks" && appTypeArray[1] == "Bond" && appTypeArray[2] == "NA" && appTypeArray[3] == "NA") 
+				if(appTypeArray[0] == "CANALS" && appTypeArray[1] == "Occupancy" && appTypeArray[2] == "Permit" && appTypeArray[3] == "NA") 
 				{
 					capStatus = cap.getCapStatus();
-					var expDate = getAppSpecific("RECORD INFROMATION.Expiration Date");
-					var expireDate = "";
-					var compareDate = "";
-					if (!matches(expDate, null, undefined, ""))
-					{
-						expireDate = new Date(expDate);
-						compareDate = new Date(expDate);
-						compareDate = new Date(dateAdd(compareDate, -45));
-						logDebug("Expire Date: " + expireDate);
-					}
-					else
-					{
-						logDebug("Expire Date NOT set");
-					}
-					if (startDate >= compareDate)
+					if (capStatus == "Active")
 					{
 						logDebug("Record Number: " + capIDString);
 						logDebug("Record Status: " + capStatus);
-						logDebug("Workflow Task: " + wfTask);
-						logDebug("Workflow Status: " + wfStatus);
-						logDebug("Bond Approval Date: " + issDate + br);
-						
+						/*
+						var expDate = getAppSpecific("RECORD INFROMATION.Expiration Date");
+						var expireDate = "";
+						var compareDate = "";
+						if (!matches(expDate, null, undefined, ""))
+						{
+							expireDate = new Date(expDate);
+							compareDate = new Date(expDate);
+							compareDate = new Date(dateAdd(compareDate, -45));
+							logDebug("Expire Date: " + expireDate);
+						}
+						else
+						{
+							logDebug("Expire Date NOT set");
+						}
+						if (startDate >= compareDate)
+						{
+							
+						}
+						*/
 					}
 				}
-				*/
 			}
 		}
 	}
@@ -138,6 +138,54 @@ function mainProcess()
 /*------------------------------------------------------------------------------------------------------/
 | <===========Internal Functions and Classes (Used by this script)
 /------------------------------------------------------------------------------------------------------*/
+
+function getInsuranceInfo() 
+{
+	var gm = aa.appSpecificTableScript.getAppSpecificTableGroupModel(itemCap).getOutput();
+	var ta = gm.getTablesArray()
+	var tai = ta.iterator();
+	while (tai.hasNext())
+	{
+		var tsm = tai.next();
+		var tempObject = new Array();
+		var tempArray = new Array();
+		var tn = tsm.getTableName();
+		var numrows = 0;
+		tn = String(tn).replace(/[^a-zA-Z0-9]+/g,'');
+		if (!isNaN(tn.substring(0,1))) tn = "TBL" + tn  // prepend with TBL if it starts with a number
+		if (!tsm.rowIndex.isEmpty())
+		{
+			var tsmfldi = tsm.getTableField().iterator();
+			var tsmcoli = tsm.getColumns().iterator();
+			var readOnlyi = tsm.getAppSpecificTableModel().getReadonlyField().iterator(); // get Readonly filed
+			var numrows = 1;
+			while (tsmfldi.hasNext())  // cycle through fields
+			{
+				if (!tsmcoli.hasNext())  // cycle through columns
+				{
+					var tsmcoli = tsm.getColumns().iterator();
+					tempArray.push(tempObject);  // end of record
+					var tempObject = new Array();  // clear the temp obj
+					numrows++;
+				}
+				var tcol = tsmcoli.next();
+				var tval = tsmfldi.next();
+				var readOnly = 'N';
+				if (readOnlyi.hasNext()) 
+				{
+					readOnly = readOnlyi.next();
+				}
+				var fieldInfo = new asiTableValObj(tcol.getColumnName(), tval, readOnly);
+				tempObject[tcol.getColumnName()] = fieldInfo;
+				//tempObject[tcol.getColumnName()] = tval;
+			}
+			tempArray.push(tempObject);  // end of record
+		}
+		var copyStr = "" + tn + " = tempArray";
+		logDebug("ASI Table Array : " + tn + " (" + numrows + " Rows)");
+		eval(copyStr);  // move to table name
+	}
+}
 
 function sendNotification(emailFrom, emailTo, emailCC, templateName, params, reportFile)
 {
