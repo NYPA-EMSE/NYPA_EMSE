@@ -108,7 +108,7 @@ function mainProcess()
 						logDebug("Record Status: " + capStatus);
 						logDebug("Invoice Date: " + invoiceDate);
 						sendEmail = getExpiredInsuranceInfo();
-						logDebug("Send Email: " + sendMail + br);
+						logDebug("Send Email: " + sendEmail + br);
 						if (sendEmail)
 						{
 							if (conArray[con].contactType == "Applicant")
