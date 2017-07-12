@@ -103,6 +103,7 @@ function mainProcess()
 					{
 						logDebug("Record Number: " + capIDString);
 						logDebug("Record Status: " + capStatus);
+						getExpiredInsuranceInfo();
 						/*
 						var expDate = getAppSpecific("RECORD INFROMATION.Expiration Date");
 						var expireDate = "";
