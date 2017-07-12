@@ -66,8 +66,8 @@ if (paramsOK)
 /-----------------------------------------------------------------------------------------------------*/
 function mainProcess()
 {
-	var fromDate = aa.util.parseDate((startDate.getMonth() + 1) + "/" + startDate.getDate() + "/" + startDate.getFullYear());
-	var toDate = aa.util.parseDate((startDate.getMonth() + 1) + "/" + startDate.getDate() + "/" + (startDate.getFullYear() + 3));
+	var fromDate = aa.calendar.getNextWorkDay(aa.util.parseDate((startDate.getMonth() + 1) + "/" + startDate.getDate() + "/" + startDate.getFullYear())).getOutput();
+	var toDate = aa.calendar.getNextWorkDay(aa.util.parseDate((startDate.getMonth() + 1) + "/" + startDate.getDate() + "/" + (startDate.getFullYear() + 3))).getOutput();
 	logDebug("From Date: " + fromDate);
 	logDebug("To Date: " + toDate);
 	var capIdList = aa.cap.getCapIDsByAppSpecificInfoDateRange("EFFECTIVE DATE", "Next Invoice Date", fromDate, toDate);
