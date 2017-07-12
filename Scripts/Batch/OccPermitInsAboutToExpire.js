@@ -82,7 +82,7 @@ function mainProcess()
 				timeExpired = true;
 				break;
 			}
-			var cId = workflows[wf].getCapID();
+			var cId = capIds[c].getCapID();
 			capId = aa.cap.getCapID(cId.getID1(), cId.getID2(), cId.getID3()).getOutput(); 
 			capIDString = capId.getCustomID();
 			cap = aa.cap.getCap(capId).getOutput();
