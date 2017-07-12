@@ -67,7 +67,7 @@ if (paramsOK)
 function mainProcess()
 {
 	var fromDate = aa.util.parseDate((startDate.getMonth() + 1) + "/" + startDate.getDate() + "/" + startDate.getFullYear());
-	var toDate = aa.calendar.getNextWorkDay(aa.util.parseDate((startDate.getMonth() + 1) + "/" + startDate.getDate() + "/" + (startDate.getFullYear() + 3)));
+	var toDate = aa.util.parseDate((startDate.getMonth() + 1) + "/" + startDate.getDate() + "/" + (startDate.getFullYear() + 3));
 	debugObject(fromDate);
 	debugObject(toDate);
 	/*
