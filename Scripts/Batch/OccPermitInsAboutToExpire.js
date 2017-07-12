@@ -183,7 +183,7 @@ function getExpiredInsuranceInfo()
 					if (tcol.getColumnName().equals("Policy Number"))
 					{
 						polNum = tval;
-						logDebug("PolNum: " + polNum;
+						logDebug("PolNum: " + polNum);
 					}
 					if (tcol.getColumnName().equals("Amount"))
 					{
