@@ -40,6 +40,7 @@ var capIDString;
 var cap;
 var capStatus = "";
 var capName = "";
+var compareDate = new Date(startDate.getMonth() + "/" + startDate.getDate() + "/" + startDate.getFullYear());
 var recCount = 0;
 /*----------------------------------------------------------------------------------------------------/
 | <===========Main=Loop================>
@@ -94,6 +95,7 @@ function mainProcess()
 				var appTypeResult = cap.getCapType();
 				var appTypeString = appTypeResult.toString();
 				var appTypeArray = appTypeString.split("/");
+				var sendEmail = false;
 				if(appTypeArray[0] == "CANALS" && appTypeArray[1] == "Occupancy" && appTypeArray[2] == "Permit" && appTypeArray[3] == "NA") 
 				{
 					recCount++;
@@ -105,27 +107,19 @@ function mainProcess()
 						logDebug("Record Number: " + capIDString);
 						logDebug("Record Status: " + capStatus);
 						logDebug("Invoice Date: " + invoiceDate + br);
-						getExpiredInsuranceInfo();
-						/*
-						var expDate = getAppSpecific("RECORD INFROMATION.Expiration Date");
-						var expireDate = "";
-						var compareDate = "";
-						if (!matches(expDate, null, undefined, ""))
+						sendEmail = getExpiredInsuranceInfo();
+						if (sendEmail)
 						{
-							expireDate = new Date(expDate);
-							compareDate = new Date(expDate);
-							compareDate = new Date(dateAdd(compareDate, -45));
-							logDebug("Expire Date: " + expireDate);
+							if (conArray[con].contactType == "Applicant")
+							{
+								conEmail = conArray[con].email;
+								addParameter("$$altId$$", capIDString);
+								if (conEmail != null)
+								{
+									sendNotification("noreply@nypa.com", conEmail, "", "INSURANCEEXPIRED", emailParams, reportFile);
+								}
+							}
 						}
-						else
-						{
-							logDebug("Expire Date NOT set");
-						}
-						if (startDate >= compareDate)
-						{
-							
-						}
-						*/
 					}
 				}
 			}
@@ -144,6 +138,7 @@ function mainProcess()
 
 function getExpiredInsuranceInfo() 
 {
+	var emailString = "";
 	var gm = aa.appSpecificTableScript.getAppSpecificTableGroupModel(capId).getOutput();
 	var ta = gm.getTablesArray()
 	var tai = ta.iterator();
@@ -165,6 +160,7 @@ function getExpiredInsuranceInfo()
 				var polNum = "";
 				var amt = 0.00;
 				var exp = "";
+				var expDate = "";
 				while (tsmfldi.hasNext())
 				{
 					if (!tsmcoli.hasNext())
@@ -173,6 +169,7 @@ function getExpiredInsuranceInfo()
 						var polNum = "";
 						var amt = 0.00;
 						var exp = "";
+						var expDate = "";
 						var tsmcoli = tsm.getColumns().iterator();
 						numrows++;
 					}
@@ -196,11 +193,29 @@ function getExpiredInsuranceInfo()
 					if (tcol.getColumnName().equals("Expiration"))
 					{
 						exp = new Date(tval);
-						logDebug("Exp: " + exp);
+						expDate = tval;
+						logDebug("Exp: " + expDate);
 						
+					}
+					if (exp > compareDate && exp < startDate)
+					{
+						emailString += "Type: " + type + ", Policy: " + polNum + ", Amount: " + amt + ", Expires: " + expDate + br;
 					}
 				}
 			}
+			if (emailString != "")
+			{
+				addParameter("$$insList$$", emailString);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
 		}
 	}
 }
