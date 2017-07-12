@@ -82,7 +82,7 @@ function mainProcess()
 				break;
 			}
 			var cId = capIds[c].getCapID();
-			capId = aa.cap.getCapID(cId.getID1(), cId.getID2(), cId.getID3()).getOutput(); 
+			capId = aa.cap.getCapID(cId.getID1(), cId.getID2(), cId.getID3()).getOutput();
 			capIDString = capId.getCustomID();
 			cap = aa.cap.getCap(capId).getOutput();
 			var emailParams = aa.util.newHashtable();
@@ -90,7 +90,7 @@ function mainProcess()
 			var reportFile = new Array();
 			var conArray = getContactArray();
 			var conEmail = "";
-			if (cap) 
+			if (cap)
 			{
 				var appTypeResult = cap.getCapType();
 				var appTypeString = appTypeResult.toString();
@@ -139,7 +139,7 @@ function mainProcess()
 
 function getExpiredInsuranceInfo() 
 {
-	var emailString = "";
+	var emailString = "No Insurance";
 	var gm = aa.appSpecificTableScript.getAppSpecificTableGroupModel(capId).getOutput();
 	var ta = gm.getTablesArray()
 	var tai = ta.iterator();
@@ -200,7 +200,8 @@ function getExpiredInsuranceInfo()
 					}
 				}
 			}
-			if (emailString != "")
+			logDebug("Email String: " + emailString);
+			if (emailString != "No Insurance")
 			{
 				addParameter("$$insList$$", emailString);
 				return true;
