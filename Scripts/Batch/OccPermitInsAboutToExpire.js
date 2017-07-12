@@ -66,10 +66,11 @@ if (paramsOK)
 /-----------------------------------------------------------------------------------------------------*/
 function mainProcess()
 {
-	var fromDate = aa.calendar.getNextWorkDay(aa.util.parseDate((startDate.getMonth() + 1) + "/" + startDate.getDate() + "/" + startDate.getFullYear())).getOutput();
-	var toDate = aa.calendar.getNextWorkDay(aa.util.parseDate((startDate.getMonth() + 1) + "/" + startDate.getDate() + "/" + (startDate.getFullYear() + 3))).getOutput();
-	logDebug("From Date: " + fromDate);
-	logDebug("To Date: " + toDate);
+	var fromDate = aa.util.parseDate((startDate.getMonth() + 1) + "/" + startDate.getDate() + "/" + startDate.getFullYear());
+	var toDate = aa.calendar.getNextWorkDay(aa.util.parseDate((startDate.getMonth() + 1) + "/" + startDate.getDate() + "/" + (startDate.getFullYear() + 3)));
+	debugObject(fromDate);
+	debugObject(toDate);
+	/*
 	var capIdList = aa.cap.getCapIDsByAppSpecificInfoDateRange("EFFECTIVE DATE", "Next Invoice Date", fromDate, toDate);
 	if (capIdList.getSuccess()) 
 	{
@@ -98,7 +99,6 @@ function mainProcess()
 				var appTypeResult = cap.getCapType();
 				var appTypeString = appTypeResult.toString();
 				var appTypeArray = appTypeString.split("/");
-				/*
 				if(appTypeArray[0] == "PublicWorks" && appTypeArray[1] == "Bond" && appTypeArray[2] == "NA" && appTypeArray[3] == "NA") 
 				{
 					capStatus = cap.getCapStatus();
@@ -126,7 +126,6 @@ function mainProcess()
 						
 					}
 				}
-				*/
 			}
 		}
 	}
@@ -135,6 +134,7 @@ function mainProcess()
 		logDebug("ERROR: Retrieving permits: " + wfList.getErrorType() + ":" + wfList.getErrorMessage());
 		return false;
 	}
+	*/
 }
 
 /*------------------------------------------------------------------------------------------------------/
