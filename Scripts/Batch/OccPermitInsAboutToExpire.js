@@ -139,7 +139,7 @@ function mainProcess()
 | <===========Internal Functions and Classes (Used by this script)
 /------------------------------------------------------------------------------------------------------*/
 
-function getInsuranceInfo() 
+function getExpiredInsuranceInfo() 
 {
 	var gm = aa.appSpecificTableScript.getAppSpecificTableGroupModel(itemCap).getOutput();
 	var ta = gm.getTablesArray()
@@ -147,43 +147,58 @@ function getInsuranceInfo()
 	while (tai.hasNext())
 	{
 		var tsm = tai.next();
-		var tempObject = new Array();
 		var tempArray = new Array();
 		var tn = tsm.getTableName();
-		var numrows = 0;
-		tn = String(tn).replace(/[^a-zA-Z0-9]+/g,'');
-		if (!isNaN(tn.substring(0,1))) tn = "TBL" + tn  // prepend with TBL if it starts with a number
-		if (!tsm.rowIndex.isEmpty())
+		if (tn.equals("INSURANCE INFO"))
 		{
-			var tsmfldi = tsm.getTableField().iterator();
-			var tsmcoli = tsm.getColumns().iterator();
-			var readOnlyi = tsm.getAppSpecificTableModel().getReadonlyField().iterator(); // get Readonly filed
-			var numrows = 1;
-			while (tsmfldi.hasNext())  // cycle through fields
+			var numrows = 0;
+			if (!tsm.rowIndex.isEmpty())
 			{
-				if (!tsmcoli.hasNext())  // cycle through columns
+				var tsmfldi = tsm.getTableField().iterator();
+				var tsmcoli = tsm.getColumns().iterator();
+				var readOnlyi = tsm.getAppSpecificTableModel().getReadonlyField().iterator(); // get Readonly filed
+				var numrows = 1;
+				var type = "";
+				var polNum = "";
+				var amt = 0.00;
+				var exp = "";
+				while (tsmfldi.hasNext())
 				{
-					var tsmcoli = tsm.getColumns().iterator();
-					tempArray.push(tempObject);  // end of record
-					var tempObject = new Array();  // clear the temp obj
-					numrows++;
+					if (!tsmcoli.hasNext())
+					{
+						var type = "";
+						var polNum = "";
+						var amt = 0.00;
+						var exp = "";
+						var tsmcoli = tsm.getColumns().iterator();
+						numrows++;
+					}
+					var tcol = tsmcoli.next();
+					var tval = tsmfldi.next();
+					if (tcol.getColumnName().equals("Type"))
+					{
+						type = tval;
+						logDebug("Type: " + type);
+					}
+					if (tcol.getColumnName().equals("Policy Number"))
+					{
+						polNum = tval;
+						logDebug("PolNum: " + polNum;
+					}
+					if (tcol.getColumnName().equals("Amount"))
+					{
+						amt = parseFloat(tval);
+						logDebug("Amt: " + amt);
+					}
+					if (tcol.getColumnName().equals("Expiration"))
+					{
+						exp = new Date(tval);
+						logDebug("Exp: " + exp);
+						
+					}
 				}
-				var tcol = tsmcoli.next();
-				var tval = tsmfldi.next();
-				var readOnly = 'N';
-				if (readOnlyi.hasNext()) 
-				{
-					readOnly = readOnlyi.next();
-				}
-				var fieldInfo = new asiTableValObj(tcol.getColumnName(), tval, readOnly);
-				tempObject[tcol.getColumnName()] = fieldInfo;
-				//tempObject[tcol.getColumnName()] = tval;
 			}
-			tempArray.push(tempObject);  // end of record
 		}
-		var copyStr = "" + tn + " = tempArray";
-		logDebug("ASI Table Array : " + tn + " (" + numrows + " Rows)");
-		eval(copyStr);  // move to table name
 	}
 }
 
