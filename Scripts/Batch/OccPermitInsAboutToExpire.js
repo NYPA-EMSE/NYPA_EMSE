@@ -66,10 +66,10 @@ if (paramsOK)
 /-----------------------------------------------------------------------------------------------------*/
 function mainProcess()
 {
-	var fromDate = aa.util.now();
-	//var toDate = aa.util.parseDate((startDate.getMonth() + 1) + "/" + startDate.getDate() + "/" + (startDate.getFullYear() + 3));
-	debugObject(fromDate);
-	debugObject(sysDate);
+	var fromDate = aa.date.getCurrentDate();
+	var toDate = aa.date.getCurrentDate(); //aa.util.parseDate((startDate.getMonth() + 1) + "/" + startDate.getDate() + "/" + (startDate.getFullYear() + 3));
+	debugObject(aa.date);
+	//debugObject(sysDate);
 	/*
 	var capIdList = aa.cap.getCapIDsByAppSpecificInfoDateRange("EFFECTIVE DATE", "Next Invoice Date", fromDate, toDate);
 	if (capIdList.getSuccess()) 
