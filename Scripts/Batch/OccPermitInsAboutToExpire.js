@@ -8,7 +8,7 @@
 /*------------------------------------------------------------------------------------------------------/
 | START: USER CONFIGURABLE PARAMETERS
 /------------------------------------------------------------------------------------------------------*/
-var maxMinutes = 5;
+var maxMinutes = 20;
 var maxSeconds = 60 * maxMinutes; //number of seconds allowed for batch processing, usually < 60 * 5
 var showDebug = true; //Set to true to see debug messages in email confirmation
 var showMessage = false;
@@ -40,9 +40,7 @@ var capIDString;
 var cap;
 var capStatus = "";
 var capName = "";
-var issueDate;
-var wfTask = "";
-var wfStatus = "";
+var recCount = 0;
 /*----------------------------------------------------------------------------------------------------/
 | <===========Main=Loop================>
 /----------------------------------------------------------------------------------------------------*/
@@ -98,11 +96,15 @@ function mainProcess()
 				var appTypeArray = appTypeString.split("/");
 				if(appTypeArray[0] == "CANALS" && appTypeArray[1] == "Occupancy" && appTypeArray[2] == "Permit" && appTypeArray[3] == "NA") 
 				{
+					recCount++;
+					invoiceDate = getAppSpecific("EFFECTIVE DATE.Next Invoice Date");
 					capStatus = cap.getCapStatus();
 					if (capStatus == "Active")
 					{
+						logDebug("Record Count: " + recCount);
 						logDebug("Record Number: " + capIDString);
 						logDebug("Record Status: " + capStatus);
+						logDebug("Invoice Date: " + invoiceDate + br);
 						getExpiredInsuranceInfo();
 						/*
 						var expDate = getAppSpecific("RECORD INFROMATION.Expiration Date");
