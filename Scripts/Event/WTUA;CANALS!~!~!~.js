@@ -31,13 +31,11 @@ if (wfStatus == "Void" || wfStatus == "Withdrawn" || wfStatus == "Denied")
 	{
 		if (!matches(assignEmail, null, undefined, ""))
 		{
-			//sendNotification("noreply@nypa.com", PAemailList[e], assignEmail, emailTemplateName, eParams, null);
-			sendNotification("noreply@nypa.com", "jeffrey.moyer@scubeenterprise.com", "", emailTemplateName, eParams, null);
+			sendNotification("noreply@nypa.com", PAemailList[e], assignEmail, emailTemplateName, eParams, null);
 		}
 		else
 		{
-			//sendNotification("noreply@nypa.com", PAemailList[e], "", emailTemplateName, eParams, null);
-			sendNotification("noreply@nypa.com", "jeffrey.moyer@scubeenterprise.com", "", emailTemplateName, eParams, null);
+			sendNotification("noreply@nypa.com", PAemailList[e], "", emailTemplateName, eParams, null);
 		}
 	}
 }

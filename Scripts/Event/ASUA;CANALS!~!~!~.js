@@ -10,7 +10,6 @@ if (capStatus == "Void" || capStatus == "Withdrawn" || capStatus == "Denied")
 	logDebug(PAemailList.join(","));
 	for (e in PAemailList)
 	{
-		//sendNotification("noreply@nypa.com", PAemailList[e], "", emailTemplateName, eParams, null);
-		sendNotification("noreply@nypa.com", "jeffrey.moyer@scubeenterprise.com", "", emailTemplateName, eParams, null);
+		sendNotification("noreply@nypa.com", PAemailList[e], "", emailTemplateName, eParams, null);
 	}
 }
