@@ -40,7 +40,7 @@ var capIDString;
 var cap;
 var capStatus = "";
 var capName = "";
-var compareDate = new Date(startDate.getMonth() + "/" + startDate.getDate() + "/" + startDate.getFullYear());
+var compareDate = new Date((startDate.getMonth() + 2) + "/" + startDate.getDate() + "/" + startDate.getFullYear());
 var recCount = 0;
 /*----------------------------------------------------------------------------------------------------/
 | <===========Main=Loop================>
@@ -106,8 +106,9 @@ function mainProcess()
 						logDebug("Record Count: " + recCount);
 						logDebug("Record Number: " + capIDString);
 						logDebug("Record Status: " + capStatus);
-						logDebug("Invoice Date: " + invoiceDate + br);
+						logDebug("Invoice Date: " + invoiceDate);
 						sendEmail = getExpiredInsuranceInfo();
+						logDebug("Send Email: " + sendMail + br);
 						if (sendEmail)
 						{
 							if (conArray[con].contactType == "Applicant")
@@ -178,26 +179,22 @@ function getExpiredInsuranceInfo()
 					if (tcol.getColumnName().equals("Type"))
 					{
 						type = tval;
-						logDebug("Type: " + type);
 					}
 					if (tcol.getColumnName().equals("Policy Number"))
 					{
 						polNum = tval;
-						logDebug("PolNum: " + polNum);
 					}
 					if (tcol.getColumnName().equals("Amount"))
 					{
 						amt = parseFloat(tval);
-						logDebug("Amt: " + amt);
 					}
 					if (tcol.getColumnName().equals("Expiration"))
 					{
 						exp = new Date(tval);
 						expDate = tval;
-						logDebug("Exp: " + expDate);
 						
 					}
-					if (exp > compareDate && exp < startDate)
+					if (exp > startDate && exp < compareDate)
 					{
 						emailString += "Type: " + type + ", Policy: " + polNum + ", Amount: " + amt + ", Expires: " + expDate + br;
 					}
