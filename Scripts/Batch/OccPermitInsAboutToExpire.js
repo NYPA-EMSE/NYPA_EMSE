@@ -148,6 +148,7 @@ function getExpiredInsuranceInfo()
 		var tsm = tai.next();
 		var tempArray = new Array();
 		var tn = tsm.getTableName();
+		logDebug("Table Name: " + tn);
 		if (tn.equals("INSURANCE INFO"))
 		{
 			var numrows = 0;
