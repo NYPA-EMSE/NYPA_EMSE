@@ -142,11 +142,11 @@ function getExpiredInsuranceInfo()
 	var emailString = "No Insurance";
 	var gm = aa.appSpecificTableScript.getAppSpecificTableGroupModel(capId).getOutput();
 	var ta = gm.getTablesArray()
+	debugObject(ta);
 	var tai = ta.iterator();
 	while (tai.hasNext())
 	{
 		var tsm = tai.next();
-		var tempArray = new Array();
 		var tn = tsm.getTableName();
 		logDebug("Table Name: " + tn);
 		if (tn.equals("INSURANCE INFO"))
