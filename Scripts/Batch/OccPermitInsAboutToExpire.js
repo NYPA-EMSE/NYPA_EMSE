@@ -109,14 +109,14 @@ function mainProcess()
 							logDebug("Record Number: " + capIDString);
 							logDebug("Record Status: " + capStatus);
 							logDebug("Invoice Date: " + invoiceDate);
-							sendEmail = getExpiredInsuranceInfo();
+							sendEmail = getExpiredInsuranceInfo(emailParams);
 							logDebug("Send Email: " + sendEmail + br);
 							if (sendEmail)
 							{
 								if (conArray[con].contactType == "Applicant")
 								{
 									conEmail = conArray[con].email;
-									addParameter("$$altId$$", capIDString);
+									addParameter(emailParams, "$$altId$$", capIDString);
 									if (conEmail != null)
 									{
 										sendNotification("noreply@nypa.com", conEmail, "", "INSURANCEEXPIRED", emailParams, reportFile);
@@ -141,7 +141,7 @@ function mainProcess()
 | <===========Internal Functions and Classes (Used by this script)
 /------------------------------------------------------------------------------------------------------*/
 
-function getExpiredInsuranceInfo() 
+function getExpiredInsuranceInfo(emailParams) 
 {
 	var emailString = "No Insurance";
 	var gm = aa.appSpecificTableScript.getAppSpecificTableGroupModel(capId).getOutput();
@@ -209,7 +209,7 @@ function getExpiredInsuranceInfo()
 			logDebug("Email String: " + emailString);
 			if (emailString != "No Insurance")
 			{
-				addParameter("$$insList$$", emailString);
+				addParameter(emailParams, "$$insList$$", emailString);
 				return true;
 			}
 			else
