@@ -84,45 +84,49 @@ function mainProcess()
 			var cId = capIds[c].getCapID();
 			capId = aa.cap.getCapID(cId.getID1(), cId.getID2(), cId.getID3()).getOutput();
 			capIDString = capId.getCustomID();
-			cap = aa.cap.getCap(capId).getOutput();
-			var emailParams = aa.util.newHashtable();
-			var reportParams = aa.util.newHashtable();
-			var reportFile = new Array();
-			var conArray = getContactArray();
-			var conEmail = "";
-			if (cap)
+			if (capIDString == "C50762")
 			{
-				var appTypeResult = cap.getCapType();
-				var appTypeString = appTypeResult.toString();
-				var appTypeArray = appTypeString.split("/");
-				var sendEmail = false;
-				if(appTypeArray[0] == "CANALS" && appTypeArray[1] == "Occupancy" && appTypeArray[2] == "Permit" && appTypeArray[3] == "NA") 
+				cap = aa.cap.getCap(capId).getOutput();
+				var emailParams = aa.util.newHashtable();
+				var reportParams = aa.util.newHashtable();
+				var reportFile = new Array();
+				var conArray = getContactArray();
+				var conEmail = "";
+				if (cap)
 				{
-					recCount++;
-					invoiceDate = getAppSpecific("EFFECTIVE DATE.Next Invoice Date");
-					capStatus = cap.getCapStatus();
-					if (capStatus == "Active")
+					var appTypeResult = cap.getCapType();
+					var appTypeString = appTypeResult.toString();
+					var appTypeArray = appTypeString.split("/");
+					var sendEmail = false;
+					if(appTypeArray[0] == "CANALS" && appTypeArray[1] == "Occupancy" && appTypeArray[2] == "Permit" && appTypeArray[3] == "NA") 
 					{
-						logDebug("Record Count: " + recCount);
-						logDebug("Record Number: " + capIDString);
-						logDebug("Record Status: " + capStatus);
-						logDebug("Invoice Date: " + invoiceDate);
-						sendEmail = getExpiredInsuranceInfo();
-						logDebug("Send Email: " + sendEmail + br);
-						if (sendEmail)
+						recCount++;
+						invoiceDate = getAppSpecific("EFFECTIVE DATE.Next Invoice Date");
+						capStatus = cap.getCapStatus();
+						if (capStatus == "Active")
 						{
-							if (conArray[con].contactType == "Applicant")
+							logDebug("Record Count: " + recCount);
+							logDebug("Record Number: " + capIDString);
+							logDebug("Record Status: " + capStatus);
+							logDebug("Invoice Date: " + invoiceDate);
+							sendEmail = getExpiredInsuranceInfo();
+							logDebug("Send Email: " + sendEmail + br);
+							if (sendEmail)
 							{
-								conEmail = conArray[con].email;
-								addParameter("$$altId$$", capIDString);
-								if (conEmail != null)
+								if (conArray[con].contactType == "Applicant")
 								{
-									sendNotification("noreply@nypa.com", conEmail, "", "INSURANCEEXPIRED", emailParams, reportFile);
+									conEmail = conArray[con].email;
+									addParameter("$$altId$$", capIDString);
+									if (conEmail != null)
+									{
+										sendNotification("noreply@nypa.com", conEmail, "", "INSURANCEEXPIRED", emailParams, reportFile);
+									}
 								}
 							}
 						}
 					}
 				}
+				break;
 			}
 		}
 	}
