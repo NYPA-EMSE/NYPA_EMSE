@@ -113,13 +113,16 @@ function mainProcess()
 							logDebug("Send Email: " + sendEmail + br);
 							if (sendEmail)
 							{
-								if (conArray[con].contactType == "Applicant")
+								for (con in conArray)
 								{
-									conEmail = conArray[con].email;
-									addParameter(emailParams, "$$altId$$", capIDString);
-									if (conEmail != null)
+									if (conArray[con].contactType == "Applicant")
 									{
-										sendNotification("noreply@nypa.com", conEmail, "", "INSURANCEEXPIRED", emailParams, reportFile);
+										conEmail = conArray[con].email;
+										addParameter(emailParams, "$$altId$$", capIDString);
+										if (conEmail != null)
+										{
+											sendNotification("noreply@nypa.com", conEmail, "", "INSURANCEEXPIRED", emailParams, reportFile);
+										}
 									}
 								}
 							}
