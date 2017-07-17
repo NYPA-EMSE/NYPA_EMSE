@@ -84,58 +84,54 @@ function mainProcess()
 			var cId = capIds[c].getCapID();
 			capId = aa.cap.getCapID(cId.getID1(), cId.getID2(), cId.getID3()).getOutput();
 			capIDString = capId.getCustomID();
-			if (capIDString == "C50762")
+			cap = aa.cap.getCap(capId).getOutput();
+			var emailParams = aa.util.newHashtable();
+			var reportParams = aa.util.newHashtable();
+			var reportFile = new Array();
+			var conArray = getContactArray();
+			var conEmail = "";
+			if (cap)
 			{
-				cap = aa.cap.getCap(capId).getOutput();
-				var emailParams = aa.util.newHashtable();
-				var reportParams = aa.util.newHashtable();
-				var reportFile = new Array();
-				var conArray = getContactArray();
-				var conEmail = "";
-				if (cap)
+				var appTypeResult = cap.getCapType();
+				var appTypeString = appTypeResult.toString();
+				var appTypeArray = appTypeString.split("/");
+				var sendEmail = false;
+				if(appTypeArray[0] == "CANALS" && appTypeArray[1] == "Occupancy" && appTypeArray[2] == "Permit" && appTypeArray[3] == "NA") 
 				{
-					var appTypeResult = cap.getCapType();
-					var appTypeString = appTypeResult.toString();
-					var appTypeArray = appTypeString.split("/");
-					var sendEmail = false;
-					if(appTypeArray[0] == "CANALS" && appTypeArray[1] == "Occupancy" && appTypeArray[2] == "Permit" && appTypeArray[3] == "NA") 
+					recCount++;
+					invoiceDate = getAppSpecific("EFFECTIVE DATE.Next Invoice Date");
+					capStatus = cap.getCapStatus();
+					if (capStatus == "Active")
 					{
-						recCount++;
-						invoiceDate = getAppSpecific("EFFECTIVE DATE.Next Invoice Date");
-						capStatus = cap.getCapStatus();
-						if (capStatus == "Active")
+						logDebug("Record Count: " + recCount);
+						logDebug("Record Number: " + capIDString);
+						logDebug("Record Status: " + capStatus);
+						logDebug("Invoice Date: " + invoiceDate);
+						sendEmail = getExpiredInsuranceInfo(emailParams);
+						logDebug("Send Email: " + sendEmail + br);
+						if (sendEmail)
 						{
-							logDebug("Record Count: " + recCount);
-							logDebug("Record Number: " + capIDString);
-							logDebug("Record Status: " + capStatus);
-							logDebug("Invoice Date: " + invoiceDate);
-							sendEmail = getExpiredInsuranceInfo(emailParams);
-							logDebug("Send Email: " + sendEmail + br);
-							if (sendEmail)
+							for (con in conArray)
 							{
-								for (con in conArray)
+								if (conArray[con].contactType == "Applicant")
 								{
-									if (conArray[con].contactType == "Applicant")
+									conEmail = conArray[con].email;
+									addParameter(emailParams, "$$altId$$", capIDString);
+									if (conEmail != null)
 									{
-										conEmail = conArray[con].email;
-										addParameter(emailParams, "$$altId$$", capIDString);
-										if (conEmail != null)
-										{
-											sendNotification("noreply@nypa.com", conEmail, "", "INSURANCEEXPIRED", emailParams, reportFile);
-										}
+										sendNotification("noreply@nypa.com", conEmail, "", "INSURANCEEXPIRED", emailParams, reportFile);
 									}
 								}
 							}
 						}
 					}
 				}
-				break;
 			}
 		}
 	}
 	else 
 	{
-		logDebug("ERROR: Retrieving permits: " + wfList.getErrorType() + ":" + wfList.getErrorMessage());
+		logDebug("ERROR: Retrieving permits: " + capIdList.getErrorType() + ":" + capIdList.getErrorMessage());
 		return false;
 	}
 }
@@ -150,13 +146,10 @@ function getExpiredInsuranceInfo(emailParams)
 	var gm = aa.appSpecificTableScript.getAppSpecificTableGroupModel(capId).getOutput();
 	var ta = gm.getTablesArray()
 	var tai = ta.toArray();
-	debugObject(tai);
-	logDebug("Array Length: " + tai.length);
 	for (var t = 0; t < tai.length; t++)
 	{
 		var tsm = tai[t];
 		var tn = tsm.getTableName();
-		logDebug("Table Name: " + tn);
 		if (tn.equals("INSURANCE INFO"))
 		{
 			var numrows = 0;
@@ -209,7 +202,6 @@ function getExpiredInsuranceInfo(emailParams)
 					}
 				}
 			}
-			logDebug("Email String: " + emailString);
 			if (emailString != "No Insurance")
 			{
 				addParameter(emailParams, "$$insList$$", emailString);
