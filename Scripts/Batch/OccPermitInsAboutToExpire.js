@@ -151,6 +151,7 @@ function getExpiredInsuranceInfo()
 	logDebug("Array Length: " + tai.length);
 	for (var t = 0; t < tai.length; t++)
 	{
+		logDebug("Index Count: " + t);
 		var tsm = tai[t];
 		debugObject(tsm);
 		/*
@@ -222,7 +223,7 @@ function getExpiredInsuranceInfo()
 		*/
 		//else
 		//{
-			return false;
+		//	return false;
 		//}
 	}
 }
