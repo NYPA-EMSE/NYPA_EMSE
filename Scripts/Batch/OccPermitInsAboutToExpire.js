@@ -147,7 +147,8 @@ function getExpiredInsuranceInfo()
 	var gm = aa.appSpecificTableScript.getAppSpecificTableGroupModel(capId).getOutput();
 	var ta = gm.getTablesArray()
 	var tai = ta.toArray();
-	debugObject(tai);
+	debugObject(tai[0]);
+	debugObject(tai[1]);
 	for (t in tai)
 	{
 		var tsm = tai[t];
