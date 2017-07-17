@@ -146,8 +146,8 @@ function getExpiredInsuranceInfo()
 	var emailString = "No Insurance";
 	var gm = aa.appSpecificTableScript.getAppSpecificTableGroupModel(capId).getOutput();
 	var ta = gm.getTablesArray()
-	debugObject();
 	var tai = ta.toArray();
+	debugObject(tai);
 	for (t in tai)
 	{
 		var tsm = tai[t];
