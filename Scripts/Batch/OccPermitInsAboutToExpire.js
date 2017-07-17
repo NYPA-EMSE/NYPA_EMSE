@@ -146,11 +146,13 @@ function getExpiredInsuranceInfo()
 	var emailString = "No Insurance";
 	var gm = aa.appSpecificTableScript.getAppSpecificTableGroupModel(capId).getOutput();
 	var ta = gm.getTablesArray()
-	debugObject(ta.toArray());
-	var tai = ta.iterator();
-	while (tai.hasNext())
+	debugObject();
+	var tai = ta.toArray();
+	for (t in tai)
 	{
-		var tsm = tai.next();
+		var tsm = tai[t];
+		debugObject(tsm);
+		/*
 		var tn = tsm.getTableName();
 		logDebug("Table Name: " + tn);
 		if (tn.equals("INSURANCE INFO"))
@@ -216,10 +218,11 @@ function getExpiredInsuranceInfo()
 				return false;
 			}
 		}
-		else
-		{
+		*/
+		//else
+		//{
 			return false;
-		}
+		//}
 	}
 }
 
