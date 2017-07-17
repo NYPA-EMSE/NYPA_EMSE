@@ -56,7 +56,7 @@ if (paramsOK)
 		mainProcess();
 		logDebug("End of Job: Elapsed Time : " + elapsed() + " Seconds");
 		logDebug("End Date: " + startDate);
-		aa.sendMail("noreply@osceolacounty.gov", emailAddress, "", "PW Bond About to Expire Records", emailText);
+		aa.sendMail("noreply@osceolacounty.gov", emailAddress, "", "Insurance About to Expire Records", emailText);
 	}
 }
 
@@ -147,9 +147,8 @@ function getExpiredInsuranceInfo()
 	var gm = aa.appSpecificTableScript.getAppSpecificTableGroupModel(capId).getOutput();
 	var ta = gm.getTablesArray()
 	var tai = ta.toArray();
-	debugObject(tai[0]);
-	debugObject(tai[1]);
-	for (t in tai)
+	debugObject(tai);
+	for (var t = 0; t < tai.length; t++)
 	{
 		var tsm = tai[t];
 		debugObject(tsm);
