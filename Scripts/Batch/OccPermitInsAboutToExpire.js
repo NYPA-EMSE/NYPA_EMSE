@@ -148,6 +148,7 @@ function getExpiredInsuranceInfo()
 	var ta = gm.getTablesArray()
 	var tai = ta.toArray();
 	debugObject(tai);
+	logDebug("Array Length: " + tai.length);
 	for (var t = 0; t < tai.length; t++)
 	{
 		var tsm = tai[t];
