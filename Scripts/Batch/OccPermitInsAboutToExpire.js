@@ -40,7 +40,7 @@ var capIDString;
 var cap;
 var capStatus = "";
 var capName = "";
-var compareDate = new Date((startDate.getMonth() + 2) + "/" + startDate.getDate() + "/" + startDate.getFullYear());
+var compareDate = new Date(dateAdd((startDate.getMonth() + 1) + "/" + startDate.getDate() + "/" + startDate.getFullYear(), 15));
 var recCount = 0;
 /*----------------------------------------------------------------------------------------------------/
 | <===========Main=Loop================>
@@ -99,14 +99,12 @@ function mainProcess()
 				if(appTypeArray[0] == "CANALS" && appTypeArray[1] == "Occupancy" && appTypeArray[2] == "Permit" && appTypeArray[3] == "NA") 
 				{
 					recCount++;
-					invoiceDate = getAppSpecific("EFFECTIVE DATE.Next Invoice Date");
 					capStatus = cap.getCapStatus();
 					if (capStatus == "Active")
 					{
 						logDebug("Record Count: " + recCount);
 						logDebug("Record Number: " + capIDString);
 						logDebug("Record Status: " + capStatus);
-						logDebug("Invoice Date: " + invoiceDate);
 						sendEmail = getExpiredInsuranceInfo(emailParams);
 						logDebug("Send Email: " + sendEmail + br);
 						if (sendEmail)
@@ -196,7 +194,7 @@ function getExpiredInsuranceInfo(emailParams)
 						expDate = tval;
 						
 					}
-					if (exp > startDate && exp < compareDate)
+					if (compareDate >= exp && compareDate < exp)
 					{
 						emailString += "Type: " + type + ", Policy: " + polNum + ", Amount: " + amt + ", Expires: " + expDate + br;
 					}
