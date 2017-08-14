@@ -216,7 +216,14 @@ function getExpiredInsuranceInfo(emailParams)
 					{
 						if (compareDate.getMonth() == exp.getMonth() && compareDate.getDate() == exp.getDate() && compareDate.getFullYear() == exp.getFullYear())
 						{
-							emailString += "Type: " + type + ", Policy: " + polNum + ", Amount: " + amt + ", Expires: " + expDate + br;
+							if(emailString == "No Insurance")
+							{
+								emailString = "Type: " + type + ", Policy: " + polNum + ", Amount: " + amt + ", Expires: " + expDate + br;
+							}
+							else
+							{
+								emailString += "Type: " + type + ", Policy: " + polNum + ", Amount: " + amt + ", Expires: " + expDate + br;
+							}
 						}
 					}
 					logDebug("Email String: " + emailString);
