@@ -2,7 +2,7 @@ showDebug = true;
 
 if (capStatus == "Void" || capStatus == "Withdrawn" || capStatus == "Denied") 
 {
-	getCompletedByEmail(capId);
+	getAssignedEmail(capId);
 	/*
 	var emailTemplateName = "CANAL_WFCANCELED"
 	var eParams = aa.util.newHashtable();
@@ -18,9 +18,9 @@ if (capStatus == "Void" || capStatus == "Withdrawn" || capStatus == "Denied")
 	*/
 }
 
-function getCompletedByEmail() // option CapId
+function getAssignedEmail() // option CapId
 {
-	var compStaff = "";
+	var assignedStaff = "";
 	var itemCap = capId
 	if (arguments.length > 0)
 	{
