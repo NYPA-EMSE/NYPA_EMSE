@@ -30,8 +30,8 @@ function getCreatedByEmail() // option CapId
 	if (capObjResult.getSuccess())
 	{
 		var capDet = capObjResult.getOutput();
-		//var capMod = capDet.getCapModel();
-		debugObject(capDet);
+		var capMod = capDet.getCapModel();
+		debugObject(capMod);
 	}
 	else
 	{ 
