@@ -20,7 +20,7 @@ if (capStatus == "Void" || capStatus == "Withdrawn" || capStatus == "Denied")
 
 function getCreatedByEmail() // option CapId
 {
-	var assignedStaff = "";
+	var createdStaff = "";
 	var itemCap = capId
 	if (arguments.length > 0)
 	{
@@ -31,7 +31,9 @@ function getCreatedByEmail() // option CapId
 	{
 		var capDet = capObjResult.getOutput();
 		var capMod = capDet.getCapModel();
-		debugObject(capMod);
+		createdStaff = capMod.getCreatedBy();
+		sysUser = aa.people.getSysUserByID(createdStaff);
+		debugObject(sysUser);
 	}
 	else
 	{ 
