@@ -30,7 +30,8 @@ function getCompletedByEmail() // option CapId
 	if (capObjResult.getSuccess())
 	{
 		var capDet = capObjResult.getOutput();
-		debugObject(capDet);
+		var capMod = capDet.getCapModel();
+		debugObject(capMod);
 	}
 	else
 	{ 
