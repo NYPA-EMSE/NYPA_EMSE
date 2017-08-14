@@ -111,13 +111,31 @@ function mainProcess()
 						{
 							for (con in conArray)
 							{
-								if (conArray[con].contactType == "Applicant")
+								if (conArray[con].contactType == "Contact")
 								{
 									conEmail = conArray[con].email;
 									addParameter(emailParams, "$$altId$$", capIDString);
 									if (conEmail != null)
 									{
+										updateTask("Insurance", "Expired", "Updated by batch script", "Script OccPermitInsAboutToExpire");
 										sendNotification("noreply@nypa.com", conEmail, "", "INSURANCEEXPIRED", emailParams, reportFile);
+									}
+									else
+									{
+										logDebug("EMAIL NOT SENT!!!!!!!!!!!")
+										logDebug("First Name: " + conArray[con].firstName);
+										logDebug("Middle Name: " + conArray[con].middleName);
+										logDebug("Last Name: " + conArray[con].lastName);
+										logDebug("Full Name: " + conArray[con].fullName);
+										logDebug("Business Name: " + conArray[con].businessName);
+										logDebug("Phone 1: " + conArray[con].phone1);
+										logDebug("Phone 2: " + conArray[con].phone2);
+										logDebug("Email: " + conArray[con].email);
+										logDebug("Address 1: " + conArray[con].addressLine1);
+										logDebug("Address 2: " + conArray[con].addressLine2);
+										logDebug("City: " + conArray[con].city);
+										logDebug("State: " + conArray[con].state);
+										logDebug("Zip: " + conArray[con].zip);
 									}
 								}
 							}
@@ -192,7 +210,6 @@ function getExpiredInsuranceInfo(emailParams)
 					{
 						exp = new Date(tval);
 						expDate = tval;
-						
 					}
 					if (compareDate >= exp && compareDate < exp)
 					{
