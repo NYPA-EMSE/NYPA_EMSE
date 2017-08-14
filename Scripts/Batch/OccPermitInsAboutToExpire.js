@@ -302,7 +302,7 @@ function updateTask(wfstr, wfstat, wfcomment, wfnote) // optional process name, 
 	if (workflowResult.getSuccess())
 		var wfObj = workflowResult.getOutput();
 	else {
-		logMessage("**ERROR: Failed to get workflow object: " + s_capResult.getErrorMessage());
+		logDebug("**ERROR: Failed to get workflow object: " + s_capResult.getErrorMessage());
 		return false;
 	}
 
@@ -319,7 +319,6 @@ function updateTask(wfstr, wfstat, wfcomment, wfnote) // optional process name, 
 				aa.workflow.handleDisposition(itemCap, stepnumber, processID, wfstat, dispositionDate, wfnote, wfcomment, systemUserObj, "U");
 			else
 				aa.workflow.handleDisposition(itemCap, stepnumber, wfstat, dispositionDate, wfnote, wfcomment, systemUserObj, "U");
-			logMessage("Updating Workflow Task " + wfstr + " with status " + wfstat);
 			logDebug("Updating Workflow Task " + wfstr + " with status " + wfstat);
 		}
 	}
