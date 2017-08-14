@@ -2,8 +2,8 @@ showDebug = true;
 
 if (capStatus == "Void" || capStatus == "Withdrawn" || capStatus == "Denied") 
 {
-	getCreatedByEmail(capId);
-	/*
+	var assignEmail = getCreatedByEmail(capId);
+	logDebug("User Email: " + assignEmail);
 	var emailTemplateName = "CANAL_WFCANCELED"
 	var eParams = aa.util.newHashtable();
 	addParameter(eParams, "$$alias$$", cap.getCapType().getAlias());
@@ -15,12 +15,16 @@ if (capStatus == "Void" || capStatus == "Withdrawn" || capStatus == "Denied")
 	{
 		sendNotification("noreply@nypa.com", PAemailList[e], "", emailTemplateName, eParams, null);
 	}
-	*/
+	if (!matches(assignEmail, null, "", undefined))
+	{
+		sendNotification("noreply@nypa.com", assignEmail, "", emailTemplateName, eParams, null);
+	}
 }
 
 function getCreatedByEmail() // option CapId
 {
 	var createdStaff = "";
+	var userEmail = "";
 	var itemCap = capId
 	if (arguments.length > 0)
 	{
@@ -36,13 +40,14 @@ function getCreatedByEmail() // option CapId
 		if (sysUser.getSuccess())
 		{
 			sysUserObj = sysUser.getOutput();
-			debugObject(sysUserObj);
+			userEmail = sysUserObj.getEmail();
 		}
 	}
 	else
 	{ 
 		logDebug("**ERROR: No cap script object : " + capObjResult.getErrorMessage());
-		return false;
+		userEmail = "";
 	}
+	return userEmail;
 }
  
