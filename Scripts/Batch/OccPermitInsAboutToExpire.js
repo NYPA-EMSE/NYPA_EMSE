@@ -212,11 +212,12 @@ function getExpiredInsuranceInfo(emailParams)
 						exp = new Date(tval);
 						expDate = tval;
 					}
-					logDebug("Compare Date: " + compareDate);
-					logDebug("Expired Date: " + exp);
-					if (compareDate.getMonth() == exp.getMonth() && compareDate.getDate() == exp.getDate() && compareDate.getFullYear() == exp.getFullYear())
+					if (!matches(exp, null, "", undefined))
 					{
-						emailString += "Type: " + type + ", Policy: " + polNum + ", Amount: " + amt + ", Expires: " + expDate + br;
+						if (compareDate.getMonth() == exp.getMonth() && compareDate.getDate() == exp.getDate() && compareDate.getFullYear() == exp.getFullYear())
+						{
+							emailString += "Type: " + type + ", Policy: " + polNum + ", Amount: " + amt + ", Expires: " + expDate + br;
+						}
 					}
 					logDebug("Email String: " + emailString);
 				}
