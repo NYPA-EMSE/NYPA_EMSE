@@ -2,7 +2,7 @@ showDebug = true;
 
 if (capStatus == "Void" || capStatus == "Withdrawn" || capStatus == "Denied") 
 {
-	getCompletedByDetails(capId);
+	getCompletedByEmail(capId);
 	/*
 	var emailTemplateName = "CANAL_WFCANCELED"
 	var eParams = aa.util.newHashtable();
@@ -18,31 +18,23 @@ if (capStatus == "Void" || capStatus == "Withdrawn" || capStatus == "Denied")
 	*/
 }
 
-function getCompletedByDetails() // option CapId
+function getCompletedByEmail() // option CapId
 {
+	var compStaff = "";
 	var itemCap = capId
 	if (arguments.length > 0)
 	{
 		itemCap = arguments[0]; // use cap ID specified in args
 	}
-	var cdScriptObjResult = aa.cap.getCapDetail(itemCap);
-	if (cdScriptObjResult.getSuccess())
+	var capObjResult = aa.cap.getCap(itemCap);
+	if (capObjResult.getSuccess())
 	{
-		var cdScriptObj = cdScriptObjResult.getOutput();
-		if (cdScriptObj)
-		{
-			cd = cdScriptObj.getCapDetailModel();
-			debugObject(cd);
-		}
-		else
-		{
-			logDebug("**ERROR: No cap detail script object");
-			return false;
-		}
+		var capDet = capObjResult.getOutput();
+		debugObject(capDet);
 	}
 	else
 	{ 
-		logDebug("**ERROR: No cap detail script object : " + cdScriptObjResult.getErrorMessage());
+		logDebug("**ERROR: No cap script object : " + capObjResult.getErrorMessage());
 		return false;
 	}
 }
