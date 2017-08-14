@@ -38,10 +38,10 @@ if (wfStatus == "Void" || wfStatus == "Withdrawn" || wfStatus == "Denied")
 			sendNotification("noreply@nypa.com", PAemailList[e], "", emailTemplateName, eParams, null);
 		}
 	}
-	var assignEmail = getCreatedByEmail(capId);
-	if (!matches(assignEmail, null, "", undefined))
+	var aEmail = getCreatedByEmail(capId);
+	if (!matches(aEmail, null, "", undefined))
 	{
-		sendNotification("noreply@nypa.com", assignEmail, "", emailTemplateName, eParams, null);
+		sendNotification("noreply@nypa.com", aEmail, "", emailTemplateName, eParams, null);
 	}
 }
 

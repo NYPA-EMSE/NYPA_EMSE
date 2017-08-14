@@ -1,10 +1,7 @@
-showDebug = true;
 
 if (capStatus == "Void" || capStatus == "Withdrawn" || capStatus == "Denied") 
 {
 	var assignEmail = getCreatedByEmail(capId);
-	assignEmail = "jeffrey.moyer@scubeenterprise.com";
-	logDebug("User Email: " + assignEmail);
 	var emailTemplateName = "CANAL_WFCANCELED"
 	var eParams = aa.util.newHashtable();
 	addParameter(eParams, "$$alias$$", cap.getCapType().getAlias());
