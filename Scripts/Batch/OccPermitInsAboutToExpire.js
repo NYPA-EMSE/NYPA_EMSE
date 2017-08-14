@@ -214,7 +214,8 @@ function getExpiredInsuranceInfo(emailParams)
 					}
 					logDebug("Compare Date: " + compareDate);
 					logDebug("Expired Date: " + exp);
-					if (compareDate >= exp && compareDate < exp)
+					debugObject(compareDate);
+					if (compareDate == exp)
 					{
 						emailString += "Type: " + type + ", Policy: " + polNum + ", Amount: " + amt + ", Expires: " + expDate + br;
 					}
