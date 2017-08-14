@@ -226,7 +226,6 @@ function getExpiredInsuranceInfo(emailParams)
 							}
 						}
 					}
-					logDebug("Email String: " + emailString);
 				}
 			}
 			if (emailString != "No Insurance")
