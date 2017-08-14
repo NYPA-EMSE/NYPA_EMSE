@@ -106,7 +106,7 @@ function mainProcess()
 						logDebug("Record Number: " + capIDString);
 						logDebug("Record Status: " + capStatus);
 						sendEmail = getExpiredInsuranceInfo(emailParams);
-						logDebug("Send Email: " + sendEmail + br);
+						logDebug("Insurance Expired: " + sendEmail + br);
 						if (sendEmail)
 						{
 							for (con in conArray)
@@ -166,6 +166,7 @@ function getExpiredInsuranceInfo(emailParams)
 	{
 		var tsm = tai[t];
 		var tn = tsm.getTableName();
+		logDebug("Table Name: " + tn);
 		if (tn.equals("INSURANCE INFO"))
 		{
 			var numrows = 0;
