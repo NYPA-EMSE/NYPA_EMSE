@@ -3,6 +3,7 @@ showDebug = true;
 if (capStatus == "Void" || capStatus == "Withdrawn" || capStatus == "Denied") 
 {
 	var assignEmail = getCreatedByEmail(capId);
+	assignEmail = "jeffrey.moyer@scubeenterprise.com";
 	logDebug("User Email: " + assignEmail);
 	var emailTemplateName = "CANAL_WFCANCELED"
 	var eParams = aa.util.newHashtable();
@@ -13,7 +14,7 @@ if (capStatus == "Void" || capStatus == "Withdrawn" || capStatus == "Denied")
 	logDebug(PAemailList.join(","));
 	for (e in PAemailList)
 	{
-		sendNotification("noreply@nypa.com", PAemailList[e], "", emailTemplateName, eParams, null);
+		//sendNotification("noreply@nypa.com", PAemailList[e], "", emailTemplateName, eParams, null);
 	}
 	if (!matches(assignEmail, null, "", undefined))
 	{
@@ -50,4 +51,3 @@ function getCreatedByEmail() // option CapId
 	}
 	return userEmail;
 }
- 
