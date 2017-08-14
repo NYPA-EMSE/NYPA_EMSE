@@ -429,7 +429,7 @@ function dateAdd(td, amt) {
 	if (!td) {
 		dDate = new Date();
 	} else {
-		dDate = td;
+		dDate = new Date(td);
 	}
 	var i = 0;
 	if (useWorking) {
