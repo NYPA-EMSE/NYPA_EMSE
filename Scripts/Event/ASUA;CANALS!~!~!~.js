@@ -33,7 +33,11 @@ function getCreatedByEmail() // option CapId
 		var capMod = capDet.getCapModel();
 		createdStaff = capMod.getCreatedBy();
 		sysUser = aa.people.getSysUserByID(createdStaff);
-		debugObject(sysUser);
+		if (sysUser.getSuccess())
+		{
+			sysUserObj = sysUser.getOutput();
+			debugObject(sysUserObj);
+		}
 	}
 	else
 	{ 
