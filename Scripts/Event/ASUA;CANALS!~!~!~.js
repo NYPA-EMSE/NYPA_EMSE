@@ -2,7 +2,7 @@ showDebug = true;
 
 if (capStatus == "Void" || capStatus == "Withdrawn" || capStatus == "Denied") 
 {
-	getAssignedEmail(capId);
+	getCreatedByEmail(capId);
 	/*
 	var emailTemplateName = "CANAL_WFCANCELED"
 	var eParams = aa.util.newHashtable();
@@ -18,7 +18,7 @@ if (capStatus == "Void" || capStatus == "Withdrawn" || capStatus == "Denied")
 	*/
 }
 
-function getAssignedEmail() // option CapId
+function getCreatedByEmail() // option CapId
 {
 	var assignedStaff = "";
 	var itemCap = capId
@@ -30,8 +30,8 @@ function getAssignedEmail() // option CapId
 	if (capObjResult.getSuccess())
 	{
 		var capDet = capObjResult.getOutput();
-		var capMod = capDet.getCapModel();
-		debugObject(capMod);
+		//var capMod = capDet.getCapModel();
+		debugObject(capDet);
 	}
 	else
 	{ 
