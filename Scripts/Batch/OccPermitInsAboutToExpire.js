@@ -135,7 +135,7 @@ function mainProcess()
 										logDebug("Address 2: " + conArray[con].addressLine2);
 										logDebug("City: " + conArray[con].city);
 										logDebug("State: " + conArray[con].state);
-										logDebug("Zip: " + conArray[con].zip);
+										logDebug("Zip: " + conArray[con].zip + br + br);
 									}
 								}
 							}
@@ -166,7 +166,6 @@ function getExpiredInsuranceInfo(emailParams)
 	{
 		var tsm = tai[t];
 		var tn = tsm.getTableName();
-		logDebug("Table Name: " + tn);
 		if (tn.equals("INSURANCE INFO"))
 		{
 			var numrows = 0;
@@ -253,7 +252,7 @@ function sendNotification(emailFrom, emailTo, emailCC, templateName, params, rep
 	result = aa.document.sendEmailAndSaveAsDocument(emailFrom, emailTo, emailCC, templateName, params, capIDScriptModel, reportFile);
 	if(result.getSuccess())
 	{
-		logDebug("Sent email successfully!");
+		logDebug("Sent email successfully!"+ br + br);
 		return true;
 	}
 	else
