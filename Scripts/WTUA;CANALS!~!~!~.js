@@ -54,11 +54,10 @@ function getCurrentUserEmail()
 {
 	var currUserEmail = "";
 	sysUser = aa.people.getSysUserByID(currentUserID);
-		if (sysUser.getSuccess())
-		{
-			sysUserObj = sysUser.getOutput();
-			currUserEmail = sysUserObj.getEmail();
-		}
+	if (sysUser.getSuccess())
+	{
+		sysUserObj = sysUser.getOutput();
+		currUserEmail = sysUserObj.getEmail();
 	}
 	return currUserEmail;
 }
