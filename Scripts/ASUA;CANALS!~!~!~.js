@@ -1,4 +1,4 @@
-
+//moved to test
 if (capStatus == "Void" || capStatus == "Withdrawn" || capStatus == "Denied") 
 {
 	var emailTemplateName = "CANAL_WFCANCELED"
