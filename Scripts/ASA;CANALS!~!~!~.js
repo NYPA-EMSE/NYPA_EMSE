@@ -5,13 +5,12 @@ var conNbr = "";
 
 for (con in conArray)
 {
-	debugObject(conArray[con]);
 	if (conArray[con].contactType == "Billing")
 	{
 		conNbr = conArray[con].contactSeqNumber;
-		logDebug("Contact number: " + conNbr);
-		if (matches(conNbr, undefined, "", null))
+		if (!matches(conNbr, undefined, "", null))
 		{
+			logDebug("Contact number: " + conNbr);
 			contactSetPrimary(conNbr);
 		}
 	}
