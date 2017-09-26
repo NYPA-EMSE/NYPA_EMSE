@@ -10,7 +10,7 @@ try{
 		applicantName = "-NA-"
 		conArr = getContactArray();
 		for (c in conArr) {
-			if (conArr[c]["contactType"] == "Applicant" ) {
+			if (conArr[c]["contactType"] == "Billing" ) {
 				if (""+conArr[c]["businessName"] != "null") {
 					applicantName = ""+conArr[c]["businessName"]
 					break
@@ -53,7 +53,7 @@ try{
 		applicantName = "-NA-"
 		conArr = getContactArray();
 		for (c in conArr) {
-			if (conArr[c]["contactType"] == "Applicant" ) {
+			if (conArr[c]["contactType"] == "Billing" ) {
 				if (""+conArr[c]["businessName"] != "null") {
 					applicantName = ""+conArr[c]["businessName"]
 					break
@@ -122,7 +122,7 @@ try{
 		applicantName = "-NA-"
 		conArr = getContactArray(parentId);
 		for (c in conArr) {
-			if (conArr[c]["contactType"] == "Applicant" ) {
+			if (conArr[c]["contactType"] == "Billing" ) {
 				if (""+conArr[c]["businessName"] != "null") {
 					applicantName = ""+conArr[c]["businessName"]
 					break
