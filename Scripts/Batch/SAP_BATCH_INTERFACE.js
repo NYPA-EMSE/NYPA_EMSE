@@ -9,8 +9,10 @@ eval(getScriptText("INCLUDES_ACCELA_FUNCTIONS"));
 eval(getScriptText("INCLUDES_CUSTOM"));
 //eval(getScriptText("INCLUDES_CUSTOM_GLOBALS"));
 var DEBUG_NEW_LINE = ("" + aa.env.getValue("BatchJobName") == "") ? "\n" : "<br>";
+var TIMEOUT = ("" + aa.env.getValue("BatchJobName") == "") ? 300 : 60*60
 var sysDate = aa.date.getCurrentDate();
 var systemUserObj = aa.person.getUser("ADMIN").getOutput();
+var PACKET_ERROR = "";
 override = "function logDebug(dstr){ aa.print(dstr + DEBUG_NEW_LINE); }";
 eval(override);
 
@@ -26,6 +28,9 @@ try {
 	var username = "" + aa.env.getValue("AdapterUsername");
 	var password = "" + aa.env.getValue("AdapterPassword");
 	var showFileData = "" + aa.env.getValue("showFileData");
+	// !!!!!!!!!!!!!!!!!!!! Set Defaults  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	var envIndicator = ((""+aa.env.getValue("envIndicator")) == "")  ? "SUPPORT" : "" + aa.env.getValue("envIndicator");
+	var emailTo = ((""+aa.env.getValue("emailTo")) == "")  ? "jcrussell@accela.com" : "" + aa.env.getValue("emailTo");
 	var SOAP_ACTION = "http://tempuri.org/IService1/uploadFile"
 	var today = new Date()
 	var startTime = today.getTime();
@@ -34,7 +39,7 @@ try {
 	var DELIM = "|"
 	var NEW_LINE = "\r\n"
 
-	var TIMEOUT = 60*60
+	
 	var FILE_TYPE = ".csv"
 	var MAX_POST_LEN = 32768
 
@@ -43,6 +48,10 @@ try {
 	FILE_NAME += ("0"+today.getDate()).slice(-2) + "-"
 	FILE_NAME += ("0"+today.getHours()).slice(-2) + "-"
 	FILE_NAME += ("0"+today.getMinutes()).slice(-2)
+
+	if(envIndicator != "PRODUCTION"){
+		FILE_NAME = envIndicator + "_" + FILE_NAME;
+	}
 
 	var processTimeout = false
 
@@ -247,7 +256,7 @@ try {
 		}
 	}
 
-
+	var reportFileSent = false;
 	if (!processTimeout) {
 		exportString = Base64.encode(SAP_Export.join(NEW_LINE))
 		thisEnd = 0;
@@ -265,19 +274,58 @@ try {
 		}
 		while ( thisEnd < exportString.length )
 
-		if (sendSuccess) logDebug("File successfully sent")
-		else logDebug("Error: File was not properly sent")
+		if (sendSuccess){
+			logDebug("File successfully sent");
+			reportFileSent = true ;
+		} else {
+			logDebug("Error: File was not properly sent");
+			reportFileSent = false ;
+		}
 
 		if (showFileData == "Y" || !sendSuccess) {
 			logDebug(DEBUG_NEW_LINE+DEBUG_NEW_LINE+"+---------------------------------------------------------------------------------------------------------------+"+DEBUG_NEW_LINE+"| SAP Data"+DEBUG_NEW_LINE+"+---------------------------------------------------------------------------------------------------------------+")
 			logDebug(SAP_Export.join(DEBUG_NEW_LINE))
 			logDebug(DEBUG_NEW_LINE+DEBUG_NEW_LINE)
 		}
+		// HERE is where we set status or records IF sendSuccess
 		logDebug("Runtime:" + elapsed(startTime))
 	}
 	else {
 		logDebug("Exceeded timeout, please rerun.")
 	}
+
+	// Send Email Begin
+	if(emailTo && emailTo != ""){
+		var tHour24 = "" + ("0"+today.getHours()).slice(-2);
+		var tHour12 = (today.getHours() > 12) ? ("0"+(today.getHours()-12)).slice(-2) :  (today.getHours() == 0) ? "12": ("0"+today.getHours()).slice(-2);
+		var tDate = "" + ("0"+today.getDate()).slice(-2);
+		var tMon = "" + ("0"+(1+today.getMonth())).slice(-2);
+		var tYear = "" + today.getFullYear();
+		var tAmPm = (today.getHours() > 11) ? "PM" : "AM" ;
+		var tMin = "" + ("0"+today.getMinutes()).slice(-2);
+		var tSec = "" + ("0"+today.getSeconds()).slice(-2);
+		var dateAsMoDayYrTime = tMon + "-" + tDate + "-" + tYear + " " + tHour12 + ":" + tMin + ":" + tSec + " " + tAmPm ;
+		var emailFrom = "noreply@nypa.com";
+		var emailCc = "";
+		var emailSubject = "SAP Invoice scheduled event ";
+		var emailBody = " records have been processed.";
+		if(processTimeout){
+			emailSubject += "did not process successfully on " + dateAsMoDayYrTime;
+			emailBody = "SAP Invoice scheduled event exceeded timeout, please rerun.";
+		} else {
+			if(reportFileSent){
+				emailSubject += "processed successfully on " + dateAsMoDayYrTime;
+				emailBody = "" + (SAP_Export.length-1) + emailBody + "";
+			} else {
+				emailSubject += "did not process successfully on " + dateAsMoDayYrTime;
+				emailBody = "" + "A failure occurred sending the file. "+PACKET_ERROR+" Please, see system logs.";
+			}
+		}
+		aa.sendMail(emailFrom,emailTo,emailCc,emailSubject,emailBody);
+		logDebug("emailFrom: " + emailFrom + " emailTo: " + emailTo + " emailCc: " + emailCc + " emailSubject: " + emailSubject + " emailBody: " + emailBody);
+		// Send Email End
+	}
+
 }
 catch(err) {
 	logDebug("**ERROR: Processing SAP Interface Batch: ");
@@ -317,6 +365,7 @@ function sendDataToWebService(dataString, fileName, stage, dataServiceURL, dataS
 		  aa.debug(aa.getServiceProviderCode() + " : ADMIN", "Error : " + postresp.getErrorMessage());
 			logDebug(xmlRequest)
 		  logDebug("Error : " + postresp.getErrorMessage());
+		  PACKET_ERROR =  postresp.getErrorMessage()
 	}
 	return false
 }
