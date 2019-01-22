@@ -30,7 +30,7 @@ try {
 	var showFileData = "" + aa.env.getValue("showFileData");
 	// !!!!!!!!!!!!!!!!!!!! Set Defaults  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	var envIndicator = ((""+aa.env.getValue("envIndicator")) == "")  ? "SUPPORT" : "" + aa.env.getValue("envIndicator");
-	var emailTo = ((""+aa.env.getValue("emailTo")) == "")  ? "jcrussell@accela.com" : "" + aa.env.getValue("emailTo");
+	var emailTo = ((""+aa.env.getValue("emailTo")) == "")  ? "ashwinipradeep.tripuraneni@nypa.gov" : "" + aa.env.getValue("emailTo");
 	var SOAP_ACTION = "http://tempuri.org/IService1/uploadFile"
 	var today = new Date()
 	var startTime = today.getTime();
