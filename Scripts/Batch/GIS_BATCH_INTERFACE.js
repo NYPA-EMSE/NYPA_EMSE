@@ -1,8 +1,21 @@
 try {
+	function getScriptText(vScriptName){
+		vScriptName = vScriptName.toUpperCase();
+		var emseBiz = aa.proxyInvoker.newInstance("com.accela.aa.emse.emse.EMSEBusiness").getOutput();
+		var emseScript = emseBiz.getScriptByPK(aa.getServiceProviderCode(),vScriptName,"ADMIN");
+		return emseScript.getScriptText() + "";
+	}
+	eval(getScriptText("INCLUDES_ACCELA_FUNCTIONS"));
+	eval(getScriptText("INCLUDES_CUSTOM"));
+	//////////////////////////////////////////////////////////////
 	var SOAP_URL = "" + aa.env.getValue("InterfaceAdapterURL");
 	var username = "" + aa.env.getValue("AdapterUsername");
 	var password = "" + aa.env.getValue("AdapterPassword");
 	var showFileData = "" + aa.env.getValue("showFileData");
+	// New with email notification - BEGIN
+	var emailTo = ((""+aa.env.getValue("emailTo")) == "")  ? "ashwinipradeep.tripuraneni@nypa.gov" : "" + aa.env.getValue("emailTo");
+	var envIndicator = ((""+aa.env.getValue("envIndicator")) == "")  ? "SUPPORT" : "" + aa.env.getValue("envIndicator");
+	// New with email notification - END
 	var SOAP_ACTION = "http://tempuri.org/IService1/uploadFile"
 	var today = new Date()
 	var startTime = today.getTime();
@@ -10,12 +23,20 @@ try {
 	var MAX_USE_CODES = 10
 	var DELIM = "|"
 	var NEW_LINE = "\r\n"
-	var DEBUG_NEW_LINE = ("" + aa.env.getValue("BatchJobName") == "") ? NEW_LINE : "<br>"
-
-	var TIMEOUT = 60*60
+	var DEBUG_NEW_LINE = ("" + aa.env.getValue("BatchJobName") == "") ? NEW_LINE : "<br>";
+	var PACKET_ERROR = "";
+	
+	
+	var TIMEOUT = ("" + aa.env.getValue("BatchJobName") == "") ? 300 : 60*60
 	var FILE_NAME = "AccelaGIS" 	//NYPA requested a static filename
 	var FILE_TYPE = ".csv"
 	var MAX_POST_LEN = 32768
+	
+	// New with email notification - BEGIN
+	if(envIndicator != "PRODUCTION"){
+		FILE_NAME = envIndicator + "_" + FILE_NAME;
+	}
+	// New with email notification - END
 
 	/*var FILE_NAME = "GIS_"+today.getFullYear() + "-"
 	FILE_NAME += ("0"+(1+today.getMonth())).slice(-2) + "-"
@@ -167,7 +188,7 @@ try {
 		}
 	}
 
-
+	var reportFileSent = false;
 	if (!processTimeout) {
 		exportString = Base64.encode(GIS_Export.join(NEW_LINE))
 		thisEnd = 0;
@@ -185,8 +206,14 @@ try {
 		}
 		while ( thisEnd < exportString.length )
 
-		if (sendSuccess) aa.print("File successfully sent")
-		else aa.print("Error: File was not properly sent")
+		if (sendSuccess){
+			aa.print("File successfully sent")
+			reportFileSent = true ;
+		} 
+		else {
+			aa.print("Error: File was not properly sent")
+			reportFileSent = false;
+		}
 
 		if (showFileData == "Y") {
 			aa.print(DEBUG_NEW_LINE+DEBUG_NEW_LINE+"+---------------------------------------------------------------------------------------------------------------+"+DEBUG_NEW_LINE+"| GIS Data"+DEBUG_NEW_LINE+"+---------------------------------------------------------------------------------------------------------------+")
@@ -197,6 +224,38 @@ try {
 	}
 	else {
 		aa.print("Exceeded timeout, please rerun.")
+	}
+
+	// Send Email Begin
+	if(emailTo && emailTo != ""){
+		var tHour24 = "" + ("0"+today.getHours()).slice(-2);
+		var tHour12 = (today.getHours() > 12) ? ("0"+(today.getHours()-12)).slice(-2) :  (today.getHours() == 0) ? "12": ("0"+today.getHours()).slice(-2);
+		var tDate = "" + ("0"+today.getDate()).slice(-2);
+		var tMon = "" + ("0"+(1+today.getMonth())).slice(-2);
+		var tYear = "" + today.getFullYear();
+		var tAmPm = (today.getHours() > 11) ? "PM" : "AM" ;
+		var tMin = "" + ("0"+today.getMinutes()).slice(-2);
+		var tSec = "" + ("0"+today.getSeconds()).slice(-2);
+		var dateAsMoDayYrTime = tMon + "-" + tDate + "-" + tYear + " " + tHour12 + ":" + tMin + ":" + tSec + " " + tAmPm ;
+		var emailFrom = "noreply@nypa.com";
+		var emailCc = "";
+		var emailSubject = "GIS Interface scheduled event ";
+		var emailBody = " records have been processed.";
+		if(processTimeout){
+			emailSubject += "did not process successfully on " + dateAsMoDayYrTime;
+			emailBody = "GIS Interface scheduled event exceeded timeout, please rerun.";
+		} else {
+			if(reportFileSent){
+				emailSubject += "processed successfully on " + dateAsMoDayYrTime;
+				emailBody = "" + (GIS_Export.length-1) + emailBody + "";
+			} else {
+				emailSubject += "did not process successfully on " + dateAsMoDayYrTime;
+				emailBody = "" + "A failure occurred sending the file. "+PACKET_ERROR+" Please, see system logs.";
+			}
+		}
+		aa.sendMail(emailFrom,emailTo,emailCc,emailSubject,emailBody);
+		logDebug("emailFrom: " + emailFrom + " emailTo: " + emailTo + " emailCc: " + emailCc + " emailSubject: " + emailSubject + " emailBody: " + emailBody);
+		// Send Email End
 	}
 }
 catch(err) {
@@ -237,6 +296,7 @@ function sendDataToWebService(dataString, fileName, stage, dataServiceURL, dataS
 	else {
 		  aa.debug(aa.getServiceProviderCode() + " : ADMIN", "Error : " + postresp.getErrorMessage());
 		  aa.print("Error : " + postresp.getErrorMessage());
+		  PACKET_ERROR =  postresp.getErrorMessage();
 	}
 	return false
 }
